@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="index.js"></script>
+    <link rel="stylesheet" type="text/css" href="index.css">   
+     
+    <title>TaskTerminator</title>    
+    <script>        
+        function loadHeader() {            
+          fetch('header')
+            .then(response => response.text())
+            .then(content => {              
+              document.getElementById("header1").innerHTML = content;
+            })
+            .catch(error => {
+              console.error('Error:', error);
+            });            
+
+            fetch('footer')
+            .then(response => response.text())
+            .then(content => {              
+              document.getElementById("footer").innerHTML = content;
+            })
+            .catch(error => {
+              console.error('Error:', error);
+            });    
+             
+        }         
+        function loadMatching() {  
+        fetch('matching-compatibility')
+            .then(response => response.text())
+            .then(content => {              
+              document.getElementById("matching-compatibility").innerHTML = content;
+            })
+            .catch(error => {
+              console.error('Error:', error);
+            }); 
+        }
+
+        function loadcharts() {  
+        fetch('charts-calculations')
+            .then(response => response.text())
+            .then(content => {              
+              document.getElementById("charts-calculations").innerHTML = content;
+            })
+            .catch(error => {
+              console.error('Error:', error);
+            }); 
+        }
+
+        function loadregister() {  
+        fetch('register')
+            .then(response => response.text())
+            .then(content => {              
+              document.getElementById("register").innerHTML = content;
+            })
+            .catch(error => {
+              console.error('Error:', error);
+            }); 
+        }
+
+
+        function loadsignin() {  
+        fetch('signin')
+            .then(response => response.text())
+            .then(content => {              
+              document.getElementById("signin").innerHTML = content;
+            })
+            .catch(error => {
+              console.error('Error:', error);
+            }); 
+        }
+
+
+        //show and hide dropdown list item on button click 
+        function show_hide() { 
+            var click = document.getElementById("list-items"); 
+            if(click.style.display ==="none") 
+                click.style.display ="block"; 
+            else 
+                click.style.display ="none";          
+        }   
+        
+        window.onload = function() {                        
+            loadHeader();
+            show_hide();
+        };
+
+        
+      </script>
+</head>
+<body>
+    
+        <div id="header1"></div>
+
+       <div id="matching-compatibility"></div>
+        <div id="charts-calculations"></div>
+      
+        <div class="horoscope-section">
+          <h2>Free Horoscopes</h2>
+          <p>Choose your moon/ascendant sign and start reading your FREE daily/weekly/monthly horoscope:</p>
+          <div class="zodiac-buttons">
+            <span>
+              <button class="zodiac-sign" onclick="redirectToHoroscope('Aries')">
+                <span class="zodiac-symbol">&#9800;</span>
+                Aries
+              </button>
+            </span>
+            <span>
+                <button class="zodiac-sign" onclick="redirectToHoroscope('Taurus')">
+                    <span class="zodiac-symbol">&#9801;</span>
+                    Taurus
+                </button>
+            </span>
+            <span>
+                <button class="zodiac-sign" onclick="redirectToHoroscope('Gemini')">
+                    <span class="zodiac-symbol">&#9802;</span>
+                    Gemini
+                </button>
+            </span>
+            <span>
+                <button class="zodiac-sign" onclick="redirectToHoroscope('Cancer')">
+                    <span class="zodiac-symbol">&#9803;</span>
+                    Cancer
+                </button>
+            </span>
+            <span>
+                <button class="zodiac-sign" onclick="redirectToHoroscope('Leo')">
+                    <span class="zodiac-symbol">&#9804;</span>
+                    Leo
+                </button>
+            </span>
+            <span>
+                <button class="zodiac-sign" onclick="redirectToHoroscope('Virgo')">
+                    <span class="zodiac-symbol">&#9805;</span>
+                    Virgo
+                </button>
+            </span>
+            <span>
+                <button class="zodiac-sign" onclick="redirectToHoroscope('Libra')">
+                    <span class="zodiac-symbol">&#9806;</span>
+                    Libra
+                </button>
+            </span>
+            <span>
+                <button class="zodiac-sign" onclick="redirectToHoroscope('Scorpio')">
+                    <span class="zodiac-symbol">&#9807;</span>
+                    Scorpio
+                </button>
+            </span>
+            <span>
+                <button class="zodiac-sign" onclick="redirectToHoroscope('Sagittarius')">
+                    <span class="zodiac-symbol">&#9808;</span>
+                    Sagittarius
+                </button>
+            </span>
+            <span>
+                <button class="zodiac-sign" onclick="redirectToHoroscope('Capricorn')">
+                    <span class="zodiac-symbol">&#9809;</span>
+                    Capricorn
+                </button>
+            </span>
+            <span>
+                <button class="zodiac-sign" onclick="redirectToHoroscope('Aquarius')">
+                    <span class="zodiac-symbol">&#9810;</span>
+                    Aquarius
+                </button>
+            </span>
+            <span>
+                <button class="zodiac-sign" onclick="redirectToHoroscope('Pisces')">
+                    <span class="zodiac-symbol">&#9811;</span>
+                    Pisces
+                </button>
+            </span>
+          </div>
+        </div>
+      
+        <div class="services">
+            <div class="service-box">
+              <h3>Charts and<br><br>  Calculations</h3>
+              <button onclick="redirectToChartsCalculations()">ENTER NOW</button>
+            </div>
+            <div class="service-box">
+              <h3>Matching and <br><br>Compatibility</h3>
+              <button onclick="redirectToMatchingCompatibility()">ENTER NOW</button>
+            </div>
+            <div class="service-box">
+              <h3>Consult with  <br><br>an Astrologer</h3>
+              <button onclick="toggleBookNow()">BOOK NOW</button>
+              <div id="book-now" class="hidden">
+                <a href="mailto:example@example.com">Consult@starpath.com</a>
+              </div>
+            </div>
+            <div class="service-box">
+              <h3>StarPath <br><br>Speaks</h3>
+              <button onclick="togglePhoneNumber()">CALL NOW</button>
+              <div id="phone-number" class="hidden">
+                <a href="tel:1234567890">1234567890</a>
+              </div>
+            </div>
+          </div>
+          
+
+        <style>
+            .zodiac-sign:hover {
+             opacity: 0.8; }
+
+
+             .service-box button:hover {
+                opacity: 0.8;}
+
+
+             .service-box:hover {
+             transform: scale(1.05);}
+
+
+             #phone-number {
+              background-color: transparent;
+              font-size: 16px;
+              padding: 1px;
+              text-align: center;}
+
+              #phone-number a {
+              color: #ffd1dc;}
+
+              #book-now  {
+              background-color: transparent;
+              font-size: 16px;
+              padding: 1px;
+              text-align: center;}
+
+              #book-now a {
+              color: #ffd1dc;}
+    
+        </style>
+         <script>
+            function togglePhoneNumber() {
+                var phoneNumberElement = document.getElementById("phone-number");
+                phoneNumberElement.classList.toggle("hidden");
+            }
+
+            
+
+        </script>
+      
+        <div id="footer"></div>
+      
+      
+</body>
+</html>

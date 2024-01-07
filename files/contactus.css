@@ -1,0 +1,15 @@
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    color: #7434a4;
+}
+
+h1, h2 {
+    color: #7434a4;
+}
+
+p {
+    color: #7434a4;
+    margin-bottom: 10px;
+}

@@ -1,0 +1,202 @@
+
+body {
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  color: #7434a4;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+
+nav {
+  background-color: transparent;
+  color: #ffd1dc;
+  padding: 10px;
+}
+
+nav ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+nav ul li {
+  margin-right: 10px;
+}
+
+nav ul li button,
+span button,
+p button {
+  background-color: #7434a4; 
+  color: #ffd1dc;
+  border: none;
+  padding: 8px 16px; 
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 10px;
+}
+
+
+h2,
+p h3,
+a {
+  color: #7434a4;
+  
+}
+h1{
+  font-size: 24px;
+  color:#7434a4;
+  
+}
+
+div {
+  background-color: white;
+  height: auto;
+  width: auto;
+  padding: 10px;
+}
+
+a {
+  text-align: left;
+}
+
+.horoscope-section {
+  text-align: center;
+  margin-top: 50px;
+}
+
+.zodiac-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+.zodiac-buttons button {
+  background-color: transparent;
+  color: #7434a4;
+  border: none;
+  padding: 8px 16px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.zodiac-sign {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.zodiac-symbol {
+  font-size: 30px;
+  margin-bottom: 5px;
+  background-color: transparent; 
+  color: #5600b2;
+}
+
+.services {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  margin-top: 30px;
+}
+
+.service-box {
+  background-color: #7434a4; 
+  color: #ffd1dc;
+  padding: 20px;
+  margin: 10px;
+  text-align: center;
+  width: 200px;
+  height: 220px; /* Fixed height added */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-radius: 10px;
+  font-family: "Arial", sans-serif;
+  background-image: url("https://img.freepik.com/free-vector/realistic-galaxy-background_23-2148991324.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  filter: saturate(70%);
+  background-blend-mode: soft-light,multiply;
+  transition: opacity 0.3s ease;
+  
+}
+
+.hidden {
+  display: none;
+}
+
+
+
+.service-box h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+  padding: 20px;
+}
+
+.service-box p {
+  margin-bottom: 20px;
+}
+
+.service-box button {
+  margin-top: auto; /* Align button to the bottom */
+  border-radius: 10px;
+  background-color: #ffd1dc; 
+  color: #7434a4;
+  margin-bottom: 18px;
+  padding: 10px 14px;
+}
+
+/* set the position of dropdown */
+.dropdown {
+  position: relative;
+  display: inline-block;
+  
+}
+
+/* set the size and position of button on web */
+.button {
+  padding: 0px 0px;
+  background-color: white;
+  font-size: 15px;
+  font-weight: bold;
+  color: #7434a4;
+  border-radius: 10px;
+  outline: none; 
+  box-shadow: none;
+  border: none;
+}
+
+/* provide css to background of list items */
+#list-items {
+  display: none;
+  position: absolute;
+  background-color: transparent;
+  min-width: 185px;
+}
+
+/* provide css to list items */
+#list-items a {
+  display: block;
+  font-size: 14px;
+  background-color: transparent;
+  color: #ffd1dc;
+  text-decoration: none;
+  padding: 5px;
+}
+
+@keyframes slideIn {
+  0% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

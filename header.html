@@ -1,0 +1,36 @@
+
+    <div id="header">
+        <button onclick="show_hide()" class="button">
+            <img src="https://drive.google.com/uc?export=view&id=1QXbPLlXNVa60MzNIshLqNrRhY5e09rXS" alt="Logo" >
+          </button>
+          
+        <center>
+            <!-- dropdown list items will show when we click the drop button -->
+            <div id="list-items">
+                <a href="/"  onclick="redirectToIndex()" > Home </a>
+                <a href="account" onclick="redirectToAccount()"> My Account </a>
+                <a href="charts-calculations"  onclick="redirectToChartsCalculations()"> Charts </a>
+                <a href="matching-compatibility"  onclick="redirectToMatchingCompatibility"> Compatibility </a>
+                <a href="register"  onclick="redirectToRegister()">Sign In/Up</a>
+                <a href="contactus" onclick="redirectToContactUs()"> Contact Us </a>
+            </div>
+        </center>
+    </div>
+
+<style>
+    #header {
+        background-image: url("https://img.freepik.com/premium-photo/abstract-universe-background_257123-10721.jpg");
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+        height: 220px;
+        background-color: transparent;
+    }
+    .button img {
+        width: 60px; 
+        height: 60px; 
+    }
+    .button:hover {
+        opacity: 0.8;
+    }
+</style>
