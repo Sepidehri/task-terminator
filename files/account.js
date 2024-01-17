@@ -134,7 +134,9 @@ function fetchTasks() {
           '<p>' + task.description + '</p>' +
           '<p>Deadline: ' + task.deadline + '</p>' +
           '<button class="editTaskBtn" data-id="' + task.id + '">Edit</button>' +
+          '<button class="completeTaskBtn" data-id="' + task.id + '">Complete</button>' +
           '<button class="deleteTaskBtn" data-id="' + task.id + '">Delete</button>' +
+          '<button class="setreminderBtn" data-id="' + task.id + '">Set Reminder</button>' +
           '</div>';
         taskList.append(taskHtml);
       });
@@ -146,6 +148,12 @@ function fetchTasks() {
     }
   });
 }
+tasks.forEach(function (task) {
+  var taskHtml = '<div class="task" id="task-' + task.id + '" ' +
+      // ... rest of your task HTML structure
+  taskList.append(taskHtml);
+});
+
 
 function deleteTask(taskId) {
   $.ajax({

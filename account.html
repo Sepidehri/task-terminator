@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="account.js"></script>
+    <link rel="stylesheet" type="text/css" href="account.css">
 </head>
 
 <body>
@@ -21,14 +22,20 @@
         <textarea id="taskDescription" placeholder="Task Description"></textarea>
         <input type="text" id="taskDeadline" placeholder="Deadline (yyyy-mm-dd)">
         <button id="saveTaskBtn">Save Task</button>
-        <button id="cancelTaskBtn" style="display:none;">Cancel</button>
+        <button id="cancelTaskBtn" >Cancel</button>
     </div>
 
 
 
     <div id="userFeedback" style="display:none;"></div> <!-- User feedback messages -->
 
-    <div id="taskList"></div> <!-- Task List will be dynamically populated here -->
+    <!-- Task List Container -->
+<div id="taskListContainer">
+  <div id="taskList"></div> <!-- Task List will be dynamically populated here -->
+</div>
+
+
+    
 
     <script>
         $(function () {
