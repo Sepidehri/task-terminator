@@ -11,11 +11,15 @@ body {
 
 
 #sideMenu {
-    flex: 0 0 300px; /* Adjust width as needed */
-    background-color: #7434a4;
+    flex: 0 0 350px; /* Adjust width as needed */
     padding: 20px;
     box-sizing: border-box;
     height: 100vh; /* Full height */
+    background-image:url('https://www.google.com/imgres?imgurl=https%3A%2F%2Fthumbs.dreamstime.com%2Fb%2Fpurple-background-blur-stock-photo-abstract-valentines-day-card-white-blurred-lights-wallpaper-39027887.jpg&tbnid=hhD4vIQCRXK-3M&vet=10CGkQMyiRAWoXChMIiP6a8p_lgwMVAAAAAB0AAAAAEAI..i&imgrefurl=https%3A%2F%2Fwww.dreamstime.com%2Fphotos-images%2Fpurple-background.html&docid=ZeIM_-Nr7jplTM&w=600&h=900&q=purple%20background&ved=0CGkQMyiRAWoXChMIiP6a8p_lgwMVAAAAAB0AAAAAEAI');
+    background-size: cover; /* Cover ensures the entire menu is filled */
+    background-repeat: no-repeat;
+    background-position: center;
+    
 }
 
 #sideMenu button {
@@ -60,7 +64,7 @@ button {
     margin-right: 20px; /* Adjust the value as needed */
 }
 #cancelTaskBtn{
-    margin-left: 14px; /* Adjust the value as needed */
+    margin-right: 20px; /* Adjust the value as needed */
 }
 
 button:hover {
