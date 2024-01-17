@@ -10,7 +10,7 @@
     "jquery": "^3.7.0",
     "jsonwebtoken": "^9.0.0",
     "mysql": "^2.18.1",
-    "mysql2": "^3.4.2",
+    "mysql2": "^3.7.0",
     "node.js": "^0.0.1-security",
     "sequelize": "^6.32.1"
   },
