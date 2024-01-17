@@ -26,6 +26,14 @@ body {
     display: block;
     width: 100%;
     margin-bottom: 10px; /* Spacing between buttons */
+    background-color: #F8F5FA;
+    color: #7434a4;
+    border: 2px solid #D1D0D1;
+}
+#sideMenu button:hover {
+    background-color: #E6E1E5; /* Darker shade for hover */
+    color: #56297D; /* Optionally change the text color on hover */
+
 }
 
 /* Style for the rest of the content */
@@ -52,19 +60,15 @@ button {
     transition: background-color 0.3s ease;
 }
 
-#createTaskBtn {
-    margin-right: 20px; /* Adjust the value as needed */
-}
-
-#logoutBtn {
-    margin-left: 20px; /* Adjust the value as needed */
-}
 
 #saveTaskBtn{
     margin-right: 20px; /* Adjust the value as needed */
+    background-color: #5a297a;
+    
 }
 #cancelTaskBtn{
     margin-right: 20px; /* Adjust the value as needed */
+    background-color: #5a297a;
 }
 
 button:hover {
@@ -115,7 +119,7 @@ h2, h3 {
 
 /* Adjustments for the task form */
 #taskForm {
-    max-width: 250px; 
+    max-width: 300px; 
     margin: 20px 0 20px 0; /* Aligning form to the left */
     padding: 20px;
     border-radius: 5px;
@@ -143,6 +147,7 @@ h2, h3 {
     background-color: #f7f7f7;
     border-radius: 5px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border: 2px solid #ccc;
 }
 
 
