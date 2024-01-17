@@ -15,7 +15,7 @@ body {
     padding: 20px;
     box-sizing: border-box;
     height: 100vh; /* Full height */
-    background-image:url('https://www.google.com/imgres?imgurl=https%3A%2F%2Fthumbs.dreamstime.com%2Fb%2Fpurple-background-blur-stock-photo-abstract-valentines-day-card-white-blurred-lights-wallpaper-39027887.jpg&tbnid=hhD4vIQCRXK-3M&vet=10CGkQMyiRAWoXChMIiP6a8p_lgwMVAAAAAB0AAAAAEAI..i&imgrefurl=https%3A%2F%2Fwww.dreamstime.com%2Fphotos-images%2Fpurple-background.html&docid=ZeIM_-Nr7jplTM&w=600&h=900&q=purple%20background&ved=0CGkQMyiRAWoXChMIiP6a8p_lgwMVAAAAAB0AAAAAEAI');
+    background-image: url("https://i.pinimg.com/736x/8b/42/31/8b423124737a14f3b7d62dafd301f249.jpg");
     background-size: cover; /* Cover ensures the entire menu is filled */
     background-repeat: no-repeat;
     background-position: center;
