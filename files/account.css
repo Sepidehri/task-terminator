@@ -5,7 +5,32 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
+    display: flex;
+    min-height: 100vh;
 }
+
+
+#sideMenu {
+    flex: 0 0 300px; /* Adjust width as needed */
+    background-color: #7434a4;
+    padding: 20px;
+    box-sizing: border-box;
+    height: 100vh; /* Full height */
+}
+
+#sideMenu button {
+    display: block;
+    width: 100%;
+    margin-bottom: 10px; /* Spacing between buttons */
+}
+
+/* Style for the rest of the content */
+#content {
+    flex: 1;
+    padding: 20px;
+    background-color: #fff;
+}
+
 
 /* Style for the main buttons */
 button {
@@ -107,7 +132,7 @@ h2, h3 {
 }
 
 /* Task List Container Styles */
-#taskListContainer {
+#taskList {
     max-width: 500px; /* Adjust width as needed */
     margin: 20px auto; /* Center container on the page */
     padding: 20px;
@@ -116,15 +141,6 @@ h2, h3 {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* Style for individual tasks */
-.task {
-    background-color: #fff;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    padding: 10px;
-    margin-bottom: 10px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
 
 /* Style for elements inside each task */
 .task h3, .task p {
