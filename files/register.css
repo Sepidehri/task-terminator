@@ -12,7 +12,8 @@ body {
 
 #welcomeMessage {
     text-align: center;
-    margin-bottom: 15px; /* Adjusted margin-bottom value */
+    margin-bottom: 15px;
+    /* Adjusted margin-bottom value */
 }
 
 #welcomeMessage h2 {
@@ -37,7 +38,8 @@ body {
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    margin-top: 15px; /* Adjusted margin-top value */
+    margin-top: 15px;
+    /* Adjusted margin-top value */
 }
 
 .header {

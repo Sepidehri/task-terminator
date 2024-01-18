@@ -11,28 +11,35 @@ body {
 
 
 #sideMenu {
-    flex: 0 0 350px; /* Adjust width as needed */
+    flex: 0 0 350px;
+    /* Adjust width as needed */
     padding: 20px;
     box-sizing: border-box;
-    height: 100vh; /* Full height */
+    height: 100vh;
+    /* Full height */
     background-image: url("https://i.pinimg.com/736x/8b/42/31/8b423124737a14f3b7d62dafd301f249.jpg");
-    background-size: cover; /* Cover ensures the entire menu is filled */
+    background-size: cover;
+    /* Cover ensures the entire menu is filled */
     background-repeat: no-repeat;
     background-position: center;
-    
+
 }
 
 #sideMenu button {
     display: block;
     width: 100%;
-    margin-bottom: 10px; /* Spacing between buttons */
+    margin-bottom: 10px;
+    /* Spacing between buttons */
     background-color: #F8F5FA;
     color: #7434a4;
     border: 2px solid #D1D0D1;
 }
+
 #sideMenu button:hover {
-    background-color: #E6E1E5; /* Darker shade for hover */
-    color: #56297D; /* Optionally change the text color on hover */
+    background-color: #E6E1E5;
+    /* Darker shade for hover */
+    color: #56297D;
+    /* Optionally change the text color on hover */
 
 }
 
@@ -60,21 +67,26 @@ button {
 }
 
 
-#saveTaskBtn{
-    margin-right: 20px; /* Adjust the value as needed */
+#saveTaskBtn {
+    margin-right: 20px;
+    /* Adjust the value as needed */
     background-color: #5a297a;
-    
+
 }
-#cancelTaskBtn{
-    margin-right: 20px; /* Adjust the value as needed */
+
+#cancelTaskBtn {
+    margin-right: 20px;
+    /* Adjust the value as needed */
     background-color: #5a297a;
 }
 
 button:hover {
-    background-color: #5a297a; 
+    background-color: #5a297a;
 }
+
 /* Style for input fields and textarea */
-input[type=text], textarea {
+input[type=text],
+textarea {
     width: 100%;
     padding: 12px 20px;
     margin: 8px 0;
@@ -100,14 +112,16 @@ div {
 
 
 
-h2, h3 {
+h2,
+h3 {
     color: #7434a4;
 }
 
 /* Additional style for the welcome message */
 #welcomeUser {
     text-align: left;
-    margin-bottom: 15px; /* Adjusted margin-bottom value */
+    margin-bottom: 15px;
+    /* Adjusted margin-bottom value */
 }
 
 #welcomeUser h2 {
@@ -118,19 +132,21 @@ h2, h3 {
 
 /* Adjustments for the task form */
 #taskForm {
-    max-width: 300px; 
-    margin: 20px 0 20px 0; /* Aligning form to the left */
+    max-width: 300px;
+    margin: 20px 0 20px 0;
+    /* Aligning form to the left */
     padding: 20px;
     border-radius: 5px;
     background-color: #f7f7f7;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Optional: Adds a subtle shadow for depth */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* Optional: Adds a subtle shadow for depth */
 }
 
 
 /* Style adjustments for inputs and textarea inside #taskForm to ensure they don't stretch too wide */
-#taskForm input[type="text"], 
+#taskForm input[type="text"],
 #taskForm textarea {
-    width: 100%; 
+    width: 100%;
     padding: 8px;
     margin: 8px 0;
     border-radius: 4px;
@@ -140,8 +156,10 @@ h2, h3 {
 
 /* Task List Container Styles */
 #taskList {
-    max-width: 500px; /* Adjust width as needed */
-    margin: 20px auto; /* Center container on the page */
+    max-width: 500px;
+    /* Adjust width as needed */
+    margin: 20px auto;
+    /* Center container on the page */
     padding: 20px;
     background-color: #f7f7f7;
     border-radius: 5px;
@@ -151,7 +169,8 @@ h2, h3 {
 
 
 /* Style for elements inside each task */
-.task h3, .task p {
+.task h3,
+.task p {
     background-color: #f7f7f7;
     padding: 8px;
     margin: 8px 0;
@@ -159,4 +178,8 @@ h2, h3 {
     border: 1px solid #ccc;
 }
 
-
+.completed-button-style {
+    background-color: green;
+    color: white;
+    /* Add any additional styling as needed */
+}
