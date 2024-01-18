@@ -18,21 +18,14 @@ app.use(session({
   resave: false,
   saveUninitialized: true
 }))
-
-
 app.use(express.static(path.join(__dirname, 'files')));
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(express.json())
-
-
 // Routes for static pages
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/register.html');
-
 });
-
-
 // User account route - serves the account page and should be protected to ensure only logged-in users can access it
 app.get('/dashboard', (req, res) => {
   if (!req.session.username) {
@@ -41,22 +34,16 @@ app.get('/dashboard', (req, res) => {
   }
   res.sendFile(__dirname + '/dashboard.html');
 });
-
-
-
-
 app.get('/account-detail', async (req, res) => {
   if (!req.session.username) {
     return res.status(401).send({ message: "Unauthorized" });
   }
-
   try {
     const user = await User.findOne({
       where: {
         username: req.session.username,
       },
     });
-
     if (user) {
       return res.status(200).send({ username: user.username, email: user.email });
     } else {
@@ -66,14 +53,10 @@ app.get('/account-detail', async (req, res) => {
     return res.status(500).send({ message: error.message });
   }
 });
-
-
-
 // User Authentication Routes
 app.get('/signin', (req, res) => {
   res.sendFile(__dirname + '/signin.html');
 });
-
 app.post('/signup', async (req, res) => {
   try {
     const user = await User.create({
@@ -86,7 +69,6 @@ app.post('/signup', async (req, res) => {
     res.status(500).send({ message: error.message });
   }
 });
-
 app.post('/login', async (req, res) => {
   try {
     const user = await User.findOne({ where: { username: req.body.username } });
@@ -103,7 +85,6 @@ app.post('/login', async (req, res) => {
     return res.status(500).send({ message: error.message });
   }
 });
-
 app.post('/logout', (req, res) => {
   req.session.destroy(err => {
     if (err) {
@@ -191,17 +172,13 @@ app.put('/tasks/completed/:id', async (req, res) => {
 app.put('/tasks/:taskId/set-reminder', (req, res) => {
   // Extract taskId from URL parameters
   const taskId = parseInt(req.params.taskId);
-
   // Extract reminderDateTime from request body
   const { reminderDateTime } = req.body;
-
   // Find task by taskId
   const taskIndex = tasks.findIndex(task => task.id === taskId);
-
   if (taskIndex > -1) {
     // Update task with reminderDateTime
     tasks[taskIndex].reminder = reminderDateTime;
-
     // Respond with success message
     res.status(200).json({
       message: 'Reminder set successfully',
@@ -277,4 +254,3 @@ app.delete('/tasks/:id', async (req, res) => {
 app.listen(3000, () => {
   console.log('Server listening on port 3000');
 });
-
