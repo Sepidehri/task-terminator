@@ -14,71 +14,63 @@
 
 <body>
 
-    <div id="sideMenu">
-        <div id="welcomeUser" style="margin-bottom: 20px;"></div>
-        <button id="logoutBtn">Logout</button>
-        <button id="createTaskBtn">Create Task</button>
-        <div id="taskForm" style="display:none;">
-            <input type="text" id="taskName" placeholder="Task Name">
-            <textarea id="taskDescription" placeholder="Task Description"></textarea>
-            <input type="text" id="taskDeadline" placeholder="Deadline (yyyy-mm-dd)">
-            <button id="saveTaskBtn">Save Task</button>
-            <button id="cancelTaskBtn">Cancel</button>
-        </div>
-        <div id="reminderForm" style="display:none;">
-            <input type="text" id="reminderDate" placeholder="Reminder Date (yyyy-mm-dd)">
-            <input type="time" id="reminderTime" placeholder="Reminder Time (HH:mm)">
-            <button id="saveReminderBtn">Save Reminder</button>
-        </div>
-    </div>
+  <div id="sideMenu">
+    <div id="welcomeUser" style="margin-bottom: 20px;"></div>
+    <button id="logoutBtn">Logout</button>
+    <button id="createTaskBtn">Create Task</button>
+    <div id="taskForm" style="display:none;">
+      <input type="text" id="taskName" placeholder="Task Name">
+      <textarea id="taskDescription" placeholder="Task Description"></textarea>
+      <input type="text" id="taskDeadline" placeholder="Deadline (yyyy-mm-dd)">
+      <button id="saveTaskBtn">Save Task</button>
+      <button id="cancelTaskBtn" >Cancel</button>
+  </div>
+    
+</div>
 
     <div id="userFeedback" style="display:none;"></div> <!-- User feedback messages -->
 
     <!-- Task List Container -->
 
-    <div id="taskList"> <!-- Task List will be dynamically populated here -->
-        <div class="task"> </div>
+  <div id="taskList"> <!-- Task List will be dynamically populated here -->
+  <div class="task"> </div>
 
 
+    
 
+    <script>
+        $(function () {
+            $("#taskDeadline").datepicker({ dateFormat: 'yy-mm-dd' });
 
-        <script>
-            $(function () {
-                $("#taskDeadline").datepicker({ dateFormat: 'yy-mm-dd' });
+            $('#createTaskBtn').click(function () {
+                // Clear the form fields and any existing feedback
+                $('#taskName').val('');
+                $('#taskDescription').val('');
+                $('#taskDeadline').val('');
+                $('#userFeedback').hide();
 
-                $('#createTaskBtn').click(function () {
-                    // Clear the form fields and any existing feedback
-                    $('#taskName').val('');
-                    $('#taskDescription').val('');
-                    $('#taskDeadline').val('');
-                    $('#userFeedback').hide();
+                // Reset any editing state
+                editingTaskId = null;
 
-                    // Reset any editing state
-                    editingTaskId = null;
-
-                    // Show the form and focus on the first input field
-                    $('#taskForm').show();
-                    $('#taskName').focus();
-                });
-
-                $('#cancelTaskBtn').click(function () {
-                    // Hide the form and clear any feedback
-                    $('#taskForm').hide();
-                    $('#userFeedback').hide();
-
-                    // Clear form fields
-                    $('#taskName').val('');
-                    $('#taskDescription').val('');
-                    $('#taskDeadline').val('');
-                    editingTaskId = null; // Reset editing state
-                });
-                $("#showCompletedTasksBtn").click(function () {
-                    fetchCompletedTasks();
-                    $("#completedTaskList").toggle(); // Toggle the display of the completed tasks list
-                });
+                // Show the form and focus on the first input field
+                $('#taskForm').show();
+                $('#taskName').focus();
             });
-        </script>
-        <script src="account.js"></script>
+
+            $('#cancelTaskBtn').click(function () {
+                // Hide the form and clear any feedback
+                $('#taskForm').hide();
+                $('#userFeedback').hide();
+
+                // Clear form fields
+                $('#taskName').val('');
+                $('#taskDescription').val('');
+                $('#taskDeadline').val('');
+                editingTaskId = null; // Reset editing state
+            });
+        });
+    </script>
+    <script src="account.js"></script>
 
 </body>
 
