@@ -30,14 +30,6 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + '/register.html');
 });
 
-app.get('/header', (req, res) => {
-  res.sendFile(__dirname + '/header.html');
-});
-
-app.get('/footer', (req, res) => {
-  res.sendFile(__dirname + '/footer.html');
-});
-
 
 // User account route - serves the account page and should be protected to ensure only logged-in users can access it
 app.get('/account', (req, res) => {
@@ -79,12 +71,6 @@ app.get('/account-detail', async (req, res) => {
 app.get('/signin', (req, res) => {
   res.sendFile(__dirname + '/signin.html');
 });
-
-app.get('/contactus', (req, res) => {
-  res.sendFile(__dirname + '/contactus.html');
-});
-
-
 
 app.post('/signup', async (req, res) => {
   try {
