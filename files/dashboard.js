@@ -136,7 +136,7 @@ function saveTask() {
           $('#taskDeadline').val('');
           editingTaskId = null;
           $('#taskForm').hide();
-          $('#userFeedback').text('Task saved successfully').show().fadeOut(3000);
+         // $('#userFeedback').text('Task saved successfully').show().fadeOut(3000);
       },
       error: function (xhr, status, error) {
           console.error('Error saving task:', status, error);
@@ -217,7 +217,7 @@ function deleteTask(taskId) {
       // Remove the task from the UI
       $('#task-' + taskId).remove();
       // Optionally, show feedback to the user that the task was deleted
-      $('#userFeedback').text('Task deleted successfully').show().fadeOut(3000);
+      //$('#userFeedback').text('Task deleted successfully').show().fadeOut(3000);
     },
     error: function (xhr, status, error) {
       // Handle any errors that occur during the request
@@ -252,7 +252,7 @@ function updateTask(taskId) {
       fetchTasks(); // Re-fetch the tasks and update the DOM
       $('#taskForm').hide();
       editingTaskId = null; // Reset the editing state
-      $('#userFeedback').text('Task updated successfully').show().fadeOut(3000);
+     // $('#userFeedback').text('Task updated successfully').show().fadeOut(3000);
     },
     error: function (xhr, status, error) {
       console.error('Error updating task:', status, error);
