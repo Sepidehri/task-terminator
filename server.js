@@ -11,6 +11,7 @@ const bcrypt = require('bcrypt');
 const cookieParser = require('cookie-parser');
 const db = require("./models");
 const User = db.user;
+const Task = db.task;
 var session = require('express-session')
 app.use(session({
   secret: 'keyboard cat',
@@ -114,8 +115,17 @@ app.post('/logout', (req, res) => {
 
 
 
-app.get('/tasks', (req, res) => {
-  res.status(200).json(tasks);
+app.get('/tasks', async (req, res) => {
+  //res.status(200).json(tasks);
+  try {
+    // Fetch all tasks from the database
+    const tasks = await Task.findAll();
+
+    res.status(200).json(tasks);
+  } catch (error) {
+    console.error('Error fetching tasks:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
 });
 
 
@@ -131,41 +141,49 @@ app.get('/tasks/:taskId', (req, res) => {
 });
 
 
-app.post('/tasks', (req, res) => {
+app.post('/tasks', async (req, res) => {
   const { name, description, deadline } = req.body;
-
-  // Validate the required fields
   if (!name) {
     return res.status(400).json({ message: 'Task name is required.' });
   }
 
-  // Create a new task object
-  const newTask = {
-    id: tasks.length + 1, // Simple ID generation (you might want a more robust method in a real application)
-    name: name,
-    description: description,
-    deadline: deadline,
-    completed: false // Set the completed status to false for new tasks
-  };
+  try {
+    const newTask = await Task.create({
+      name,
+      description,
+      deadline,
+      completed: false
+    });
 
-  // Add the new task to the tasks array
-  tasks.push(newTask);
-
-  // Send back the newly created task
-  res.status(201).json(newTask);
-});
-
-app.put('/tasks/completed/:id', (req, res) => {
-  const taskId = parseInt(req.params.id);
-  const taskIndex = tasks.findIndex(task => task.id === taskId);
-
-  if (taskIndex !== -1) {
-    tasks[taskIndex].completed = true;  // Mark the task as completed
-    res.status(200).json({ message: 'Task marked as complete.' });
-  } else {
-    res.status(404).json({ message: 'Task not found.' });
+    res.status(201).json(newTask);
+  } catch (error) {
+    console.error('Error saving task:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
+
+
+
+app.put('/tasks/completed/:id', async (req, res) => {
+  const taskId = parseInt(req.params.id);
+
+  try {
+    const task = await Task.findByPk(taskId);
+    if (!task) {
+      return res.status(404).json({ message: 'Task not found.' });
+    }
+
+    task.completed = true;
+    await task.save();
+
+    res.status(200).json({ message: 'Task marked as complete.', task });
+  } catch (error) {
+    console.error('Error marking task as complete:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 
 
 
@@ -196,43 +214,62 @@ app.put('/tasks/:taskId/set-reminder', (req, res) => {
 
 
 
-app.put('/tasks/:id', (req, res) => {
+app.put('/tasks/:id', async (req, res) => {
   // Parse the task ID from the URL parameter to an integer
   const taskId = parseInt(req.params.id);
 
   // Extract the updated task details from the request body
-  const { name, description, deadline } = req.body;
+  const { name, description, deadline, completed } = req.body;
 
-  // Find the index of the task in the array
-  const taskIndex = tasks.findIndex(task => task.id === taskId);
+  try {
+    // Use Sequelize to find the task by ID
+    const task = await Task.findByPk(taskId);
 
-  // If a task with the given ID exists, update it
-  if (taskIndex > -1) {
-    tasks[taskIndex] = {
-      ...tasks[taskIndex], // Spread the existing task to preserve other properties
-      name,               // Update name
-      description,        // Update description
-      deadline            // Update deadline
-    };
-    // Send the updated task as the response
-    res.status(200).json(tasks[taskIndex]);
-  } else {
-    // If the task was not found, send a 404 Not Found response
-    res.status(404).json({ message: 'Task not found.' });
+    // If task not found, return 404
+    if (!task) {
+      return res.status(404).json({ message: 'Task not found.' });
+    }
+
+    // Update the task with the new details
+    task.name = name;
+    task.description = description;
+    task.deadline = deadline;
+    task.completed = completed;
+
+    // Save the updated task to the database
+    await task.save();
+
+    // Respond with the updated task as the response
+    res.status(200).json(task);
+  } catch (error) {
+    console.error('Error updating task:', error);
+    res.status(500).json({ message: 'Internal server error.' });
   }
 });
 
 
 
 
-app.delete('/tasks/:id', (req, res) => {
+app.delete('/tasks/:id', async (req, res) => {
   const taskId = parseInt(req.params.id);
-  const taskIndex = tasks.findIndex(task => task.id === taskId);
-  if (taskIndex === -1) {
-    return res.status(404).json({ message: 'Task not found.' });
+  try {
+    // Use Sequelize to find the task by ID
+    const task = await Task.findByPk(taskId);
+
+    // If task not found, return 404
+    if (!task) {
+      return res.status(404).json({ message: 'Task not found.' });
+    }
+
+    // Delete the task
+    await task.destroy();
+
+    // Respond with success message
+    res.status(200).json({ message: 'Task deleted successfully.' });
+  } catch (error) {
+    console.error('Error deleting task:', error);
+    res.status(500).json({ message: 'Internal server error.' });
   }
-  tasks.splice(taskIndex, 1);
-  res.status(200).json({ message: 'Task deleted successfully.' });
 });
 
 // Server Start

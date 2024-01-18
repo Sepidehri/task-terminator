@@ -155,40 +155,32 @@ function saveTask() {
   var description = $('#taskDescription').val();
   var deadline = $('#taskDeadline').val();
 
-  // Validate input here if necessary
   if (!name || !description || !deadline) {
-    $('#userFeedback').text('Please fill in all fields').show();
-    return; // Exit the function if validation fails
+      $('#userFeedback').text('Please fill in all fields').show();
+      return;
   }
 
   $.ajax({
-    url: '/tasks',
-    method: 'POST',
-    contentType: 'application/json',
-    data: JSON.stringify({ name, description, deadline }),
-    success: function (response) {
-      // Refresh the task list to include the new task
-      fetchTasks();
-
-      // Clear the form fields for a new entry
-      $('#taskName').val('');
-      $('#taskDescription').val('');
-      $('#taskDeadline').val('');
-      editingTaskId = null; // Reset any editing state
-
-      // Hide the task form after saving
-      $('#taskForm').hide();
-
-      // Provide feedback to the user that the task was successfully saved
-      $('#userFeedback').text('Task saved successfully').show().fadeOut(3000); // Message will fade out after 3 seconds
-    },
-    error: function (xhr, status, error) {
-      // Handle any errors that occur during the request
-      console.error('Error saving task:', status, error);
-      $('#userFeedback').text('Error saving task. Please try again.').show();
-    }
+      url: '/tasks',
+      method: 'POST',
+      contentType: 'application/json',
+      data: JSON.stringify({ name, description, deadline }),
+      success: function (response) {
+          fetchTasks();
+          $('#taskName').val('');
+          $('#taskDescription').val('');
+          $('#taskDeadline').val('');
+          editingTaskId = null;
+          $('#taskForm').hide();
+          $('#userFeedback').text('Task saved successfully').show().fadeOut(3000);
+      },
+      error: function (xhr, status, error) {
+          console.error('Error saving task:', status, error);
+          $('#userFeedback').text('Error saving task. Please try again.').show();
+      }
   });
 }
+
 
 
 $('#logoutBtn').click(function () {
@@ -311,21 +303,21 @@ function updateTask(taskId) {
 
 
 function markTaskAsComplete(taskId, buttonElement) {
-  console.log("Function markTaskAsComplete called with taskId: " + taskId);
   $.ajax({
     url: '/tasks/completed/' + taskId,
     method: 'PUT',
-    success: function (response) {
+    success: function(response) {
       $(buttonElement).text('Completed')
         .addClass('completed-button-style')
         .prop('disabled', true);
-      fetchTasks();
+      // Optionally, you can remove the task from the list or refresh the tasks
     },
-    error: function (error) {
+    error: function(error) {
       console.error('Error marking task as complete:', error);
     }
   });
 }
+
 
 function fetchCompletedTasks() {
   $.ajax({
