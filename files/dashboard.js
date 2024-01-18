@@ -167,27 +167,42 @@ function fetchTasks() {
     success: function (tasks) {
       var taskList = $('#taskList');
       taskList.empty();
+
       tasks.forEach(function (task) {
-        var taskHtml = '<div id="task-' + task.id + '" ' +
-          'data-name="' + task.name + '" ' +
-          'data-description="' + task.description + '" ' +
-          'data-deadline="' + task.deadline + '">' +
-          '<h3>' + task.name + '</h3>' +
-          '<p>' + task.description + '</p>' +
-          '<p>Deadline: ' + task.deadline + '</p>' +
-          '<button class="editTaskBtn" data-id="' + task.id + '">Edit</button>' +
-          '<button class="deleteTaskBtn" data-id="' + task.id + '">Delete</button>' +
-          '<button class="setreminderBtn" data-id="' + task.id + '">Set Reminder</button>' +
-          '<button class="completeTaskBtn" data-id="' + task.id + '">Mark as Complete</button>' +
-          '</div>';
+        var taskHtml = `
+          <div class="task" id="task-${task.id}" 
+            data-name="${task.name}" 
+            data-description="${task.description}" 
+            data-deadline="${task.deadline}">
+            <div class="task-field">
+              <label>Name:</label>
+              <p>${task.name}</p>
+            </div>
+            <div class="task-field">
+              <label>Description:</label>
+              <p>${task.description}</p>
+            </div>
+            <div class="task-field">
+              <label>Deadline:</label>
+              <p>${task.deadline}</p>
+            </div>
+            <div class="task-actions">
+              <button class="editTaskBtn" data-id="${task.id}">Edit</button>
+              <button class="deleteTaskBtn" data-id="${task.id}">Delete</button>
+              <button class="setreminderBtn" data-id="${task.id}">Set Reminder</button>
+              <button class="completeTaskBtn" data-id="${task.id}">Mark as Complete</button>
+            </div>
+          </div>
+        `;
         taskList.append(taskHtml);
       });
+
+      // Reattach event listeners for Edit, Delete, etc., if necessary
     },
     error: function (xhr, status, error) {
-      // Handle error
       console.error('Error fetching tasks:', status, error);
-    }
-  });
+    }
+  });
 }
 tasks.forEach(function (task) {
   var taskHtml = '<div class="task" id="task-' + task.id + '" ' +
