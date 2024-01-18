@@ -126,35 +126,41 @@ $('#logoutBtn').click(function () {
 
 function fetchTasks() {
   $.ajax({
-    url: '/tasks',
-    method: 'GET',
-    success: function (tasks) {
-      var taskList = $('#taskList');
-      taskList.empty();
+      url: '/tasks',
+      method: 'GET',
+      success: function (tasks) {
+          var taskList = $('#taskList');
+          taskList.empty();
 
-      tasks.forEach(function (task) {
-        var taskHtml = '<div id="task-' + task.id + '" ' +
-          'data-name="' + task.name + '" ' +
-          'data-description="' + task.description + '" ' +
-          'data-deadline="' + task.deadline + '">' +
-          '<h3>' + task.name + '</h3>' +
-          '<p>' + task.description + '</p>' +
-          '<p>Deadline: ' + task.deadline + '</p>' +
-          '<button class="editTaskBtn" data-id="' + task.id + '">Edit</button>' +
-          '<button class="completeTaskBtn" data-id="' + task.id + '">Complete</button>' +
-          '<button class="deleteTaskBtn" data-id="' + task.id + '">Delete</button>' +
-          '<button class="setreminderBtn" data-id="' + task.id + '">Set Reminder</button>' +
-          '</div>';
-        taskList.append(taskHtml);
-      });
+          tasks.forEach(function (task) {
+              var taskHtml = `
+                  <div class="task" id="task-${task.id}">
+                      <label for="taskName-${task.id}">Task Name</label>
+                      <input type="text" id="taskName-${task.id}" value="${task.name}" readonly>
 
-    },
-    error: function (xhr, status, error) {
-      // Handle error
-      console.error('Error fetching tasks:', status, error);
-    }
+                      <label for="taskDescription-${task.id}">Task Description</label>
+                      <textarea id="taskDescription-${task.id}" readonly>${task.description}</textarea>
+
+                      <label for="taskDeadline-${task.id}">Deadline</label>
+                      <input type="text" id="taskDeadline-${task.id}" value="${task.deadline}" readonly>
+
+                      <button class="editTaskBtn" data-id="${task.id}">Edit</button>
+                      <button class="deleteTaskBtn" data-id="${task.id}">Delete</button>
+                      <button class="completeTaskBtn" data-id="${task.id}">Complete</button>
+                      <button class="setreminderBtn" data-id="${task.id}">Set Reminder</button>
+                  </div>`;
+              taskList.append(taskHtml);
+          });
+      },
+      error: function (xhr, status, error) {
+          console.error('Error fetching tasks:', status, error);
+      }
   });
 }
+
+      
+
+  
 tasks.forEach(function (task) {
   var taskHtml = '<div class="task" id="task-' + task.id + '" ' +
       // ... rest of your task HTML structure
