@@ -14,12 +14,14 @@ body {
     flex: 0 0 350px; /* Adjust width as needed */
     padding: 20px;
     box-sizing: border-box;
-    height: 100vh; /* Full height */
     background-image: url("https://digwallpapers.com/wallpapers/full/2/f/d/86300-2160x3840-purple-and-black-background-photo-phone-4k.jpg");
     background-size: cover; /* Cover ensures the entire menu is filled */
     background-repeat: no-repeat;
     background-position: center;
-    
+    display: flex;
+    flex-direction: column; /* Stack children vertically */
+    justify-content: flex-start; /* Align children to the start of the flex container */
+    align-items: stretch; /
 }
 
 #sideMenu button {
