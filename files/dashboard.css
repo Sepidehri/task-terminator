@@ -83,7 +83,6 @@ input[type=text], textarea {
     display: inline-block;
     border: 1px solid #ccc;
     border-radius: 4px;
-    box-sizing: border-box;
     background-color: #f7f7f7;
 }
 
@@ -142,13 +141,8 @@ h2, h3 {
 
 /* Task List Container Styles */
 #taskList {
-    max-width: 600px; /* Adjust width as needed */
     margin: 20px auto; /* Center container on the page */
-    padding: 20px;
-    background-color: #f7f7f7;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    border: 2px solid #ccc;
+    background-color: transparent; 
 }
 
 
@@ -167,7 +161,7 @@ h2, h3 {
     border-radius: 4px;
     padding: 15px;
     margin-bottom: 15px; /* Space between each task */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+   
 }
 
 .task label {
@@ -183,6 +177,5 @@ h2, h3 {
     margin-top: 5px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    box-sizing: border-box;
     display: block;
 }
