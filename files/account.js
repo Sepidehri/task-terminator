@@ -47,18 +47,25 @@ $(document).ready(function () {
   });
 });
 
+function capitalizeFirstLetter(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
 function fetchUserDetails() {
   $.ajax({
-    url: '/account-detail',
-    method: 'GET',
-    success: function (response) {
-      $('#welcomeUser').html('<h2>Welcome, ' + response.username + '</h2>');
-    },
-    error: function (error) {
-      console.error('Error fetching user details:', error);
-    }
+      url: '/account-detail',
+      method: 'GET',
+      success: function (response) {
+          // Assuming response.username is a string with the user's name
+          var displayName = capitalizeFirstLetter(response.username);
+          $('#welcomeUser').html('<h2>Welcome ' + displayName + '!</h2>');
+      },
+      error: function (error) {
+          console.error('Error fetching user details:', error);
+      }
   });
 }
+
 
 function saveTask() {
   var name = $('#taskName').val();
@@ -226,3 +233,4 @@ function completeTask(taskId) {
   // Implement the logic to mark a task as completed
   // This might involve updating the task status in your database
 }
+
