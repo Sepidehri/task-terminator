@@ -27,7 +27,7 @@ $(document).on('click', '#loginBtn', function () {
     contentType: "application/json",
     success: function (response) {
       alert("Successfully logged in");
-      window.location.href = "/account";
+      window.location.href = "/dashboard";
     },
     error: function (xhr, status, error) {
       document.getElementById("errorMsg").innerHTML = "Invalid username or password.";

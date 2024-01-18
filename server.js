@@ -29,16 +29,17 @@ app.use(express.json())
 // Routes for static pages
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/register.html');
+
 });
 
 
 // User account route - serves the account page and should be protected to ensure only logged-in users can access it
-app.get('/account', (req, res) => {
+app.get('/dashboard', (req, res) => {
   if (!req.session.username) {
     // If there is no session, redirect to the login page or send an unauthorized response
-    return res.redirect('/signin');
+    return res.redirect('/');
   }
-  res.sendFile(__dirname + '/account.html');
+  res.sendFile(__dirname + '/dashboard.html');
 });
 
 
