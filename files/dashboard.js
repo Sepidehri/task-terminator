@@ -1,10 +1,28 @@
 let editingTaskId = null;
+
+function requestNotificationPermission() {
+  Notification.requestPermission().then(function (permission) {
+    if (permission === "granted") {
+      console.log("Notification permission granted.");
+      // You can now show notifications
+    }
+  });
+}
+
 $(document).ready(function () {
+  requestNotificationPermission();
   fetchUserDetails();
   fetchTasks();
   $("#reminderDate").datepicker({
     dateFormat: "yy-mm-dd"
   });
+
+  $("#taskDeadline").datepicker({
+    dateFormat: 'yy-mm-dd',
+    minDate: 0 // Disables all the dates before today
+  });
+
+
   $('#createTaskBtn').click(function () {
     // Clear the form fields
     $('#taskName').val('');
@@ -65,31 +83,40 @@ function setupReminder(taskId) {
   // Focus on the reminder date field
   $('#reminderDate').focus();
 }
-// Function to handle setting the reminder
-$('#saveReminderBtn').click(function () {
+
+
+
+
+$(document).on('click', '#saveReminderBtn', function () {
   var taskId = $('#reminderForm').data('taskId');
   var reminderDate = $('#reminderDate').val();
   var reminderTime = $('#reminderTime').val();
-  // Validate the reminder date and time
+
   if (!reminderDate || !reminderTime) {
     $('#userFeedback').text('Please select both date and time for the reminder').show();
-    return; // Exit the function if validation fails
+    return;
   }
-  // Combine date and time to create a full datetime string
-  var reminderDateTime = reminderDate + 'T' + reminderTime;
+
+  var selectedDateTime = new Date(reminderDate + ' ' + reminderTime);
+  var currentDateTime = new Date();
+
+  if (selectedDateTime <= currentDateTime) {
+    $('#userFeedback').text('Cannot set a reminder in the past. Please select a future date and time.').show();
+    return;
+  }
+
+  
   // AJAX call to server to set reminder
   $.ajax({
     url: '/tasks/' + taskId + '/set-reminder',
     method: 'PUT',
     contentType: 'application/json',
-    data: JSON.stringify({ reminderDateTime: reminderDateTime }),
+    data: JSON.stringify({ reminderDateTime: selectedDateTime.toISOString() }),
     success: function (response) {
-      // Hide the reminder form and show feedback
       $('#reminderForm').hide();
-      $('#reminderDate').val(''); // Reset the date field
-      $('#reminderTime').val(''); // Reset the time field
+      $('#reminderDate').val('');
+      $('#reminderTime').val('');
       $('#userFeedback').text('Reminder set successfully').show().fadeOut(3000);
-      // Additional code to handle the response
     },
     error: function (xhr, status, error) {
       console.error('Error setting reminder:', error);
@@ -97,6 +124,40 @@ $('#saveReminderBtn').click(function () {
     }
   });
 });
+
+
+
+$(document).on('click', '#cancelReminderBtn', function () {
+  $('#reminderForm').hide();
+  $('#reminderDate').val('');
+  $('#reminderTime').val('');
+  $('#userFeedback').hide();
+});
+
+
+function scheduleReminder(task) {
+  var reminderTime = new Date(task.reminderDateTime).getTime();
+  var now = new Date().getTime();
+  var timeUntilReminder = reminderTime - now;
+
+  if (timeUntilReminder > 0) {
+    setTimeout(function () {
+      showNotification('Reminder for task: ' + task.name);
+    }, timeUntilReminder);
+  }
+}
+
+
+function showNotification(message) {
+  if (!("Notification" in window)) {
+    alert("This browser does not support desktop notification");
+  }
+  else if (Notification.permission === "granted") {
+    var notification = new Notification(message);
+  }
+}
+
+
 function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
@@ -120,46 +181,52 @@ function saveTask() {
   var deadline = $('#taskDeadline').val();
 
   if (!name || !description || !deadline) {
-      $('#userFeedback').text('Please fill in all fields').show();
-      return;
+    $('#userFeedback').text('Please fill in all fields').show();
+    return;
   }
 
   $.ajax({
-      url: '/tasks',
-      method: 'POST',
-      contentType: 'application/json',
-      data: JSON.stringify({ name, description, deadline }),
-      success: function (response) {
-          fetchTasks();
-          $('#taskName').val('');
-          $('#taskDescription').val('');
-          $('#taskDeadline').val('');
-          editingTaskId = null;
-          $('#taskForm').hide();
-          $('#userFeedback').text('Task saved successfully').show().fadeOut(3000);
-      },
-      error: function (xhr, status, error) {
-          console.error('Error saving task:', status, error);
-          $('#userFeedback').text('Error saving task. Please try again.').show();
-      }
+    url: '/tasks',
+    method: 'POST',
+    contentType: 'application/json',
+    data: JSON.stringify({ name, description, deadline }),
+    success: function (response) {
+      fetchTasks();
+      $('#taskName').val('');
+      $('#taskDescription').val('');
+      $('#taskDeadline').val('');
+      editingTaskId = null;
+      $('#taskForm').hide();
+      $('#userFeedback').text('Task saved successfully').show().fadeOut(3000);
+    },
+    error: function (xhr, status, error) {
+      console.error('Error saving task:', status, error);
+      $('#userFeedback').text('Error saving task. Please try again.').show();
+    }
   });
 }
 
 
 
-$('#logoutBtn').click(function () {
+$(document).on('click', '#logoutBtn', function () {
   $.ajax({
     url: '/logout',
     type: 'POST',
     success: function (response) {
-      // Redirect to the login page after successful logout
-      window.location.href = '/login';
+      // If logout is successful, redirect to the login page
+      window.location.href = '/';
+      alert('Successfully logged out');
     },
-    error: function (error) {
+    error: function (xhr, status, error) {
+      // Error handling
+      console.error('Logout failed:', error);
       alert('Logout failed. Please try again.');
     }
   });
 });
+
+
+
 function fetchTasks() {
   $.ajax({
     url: '/tasks',
@@ -169,11 +236,18 @@ function fetchTasks() {
       taskList.empty();
 
       tasks.forEach(function (task) {
+        // Determine button label and class based on completion status
+        var buttonLabel = task.completed ? 'Completed' : 'Mark as Complete';
+        var buttonClass = task.completed ? 'completed-button-style' : 'completeTaskBtn';
+        var disabledAttribute = task.completed ? 'disabled="disabled"' : '';
+
+        // Constructing the HTML for each task with data attributes
         var taskHtml = `
           <div class="task" id="task-${task.id}" 
             data-name="${task.name}" 
             data-description="${task.description}" 
-            data-deadline="${task.deadline}">
+            data-deadline="${task.deadline}" 
+            data-reminder-date="${task.reminderDateTime || ''}">
             <div class="task-field">
               <label>Name:</label>
               <p>${task.name}</p>
@@ -190,20 +264,86 @@ function fetchTasks() {
               <button class="editTaskBtn" data-id="${task.id}">Edit</button>
               <button class="deleteTaskBtn" data-id="${task.id}">Delete</button>
               <button class="setreminderBtn" data-id="${task.id}">Set Reminder</button>
-              <button class="completeTaskBtn" data-id="${task.id}">Mark as Complete</button>
+              <button class="${buttonClass}" data-id="${task.id}" ${disabledAttribute}>${buttonLabel}</button>
             </div>
           </div>
         `;
         taskList.append(taskHtml);
+
+        if (task.reminderDateTime) {
+          scheduleReminder(task);
+        }
+
+        // Set reminders for tasks with reminder date and time
+        if (task.reminderDateTime) {
+          scheduleReminder(task);
+        }
       });
 
-      // Reattach event listeners for Edit, Delete, etc., if necessary
+      // Reattach event listeners to the buttons
+      reattachEventListeners();
     },
     error: function (xhr, status, error) {
       console.error('Error fetching tasks:', status, error);
-    }
-  });
+      $('#userFeedback').text('Error fetching tasks').show();
+    }
+  });
 }
+
+// Function to schedule a reminder
+function scheduleReminder(task) {
+  var reminderTime = new Date(task.reminderDateTime).getTime();
+  var now = new Date().getTime();
+  var timeUntilReminder = reminderTime - now;
+
+  if (timeUntilReminder > 0) {
+    setTimeout(function () {
+      alert('Reminder for task: ' + task.name);
+    }, timeUntilReminder);
+  }
+}
+
+// Function to reattach event listeners
+function reattachEventListeners() {
+  // Reattach click event to the edit button
+  $('.editTaskBtn').off('click').on('click', function () {
+    var taskId = $(this).data('id');
+    populateEditForm(taskId);
+  });
+
+  // Reattach click event to the delete button
+  $('.deleteTaskBtn').off('click').on('click', function () {
+    var taskId = $(this).data('id');
+    deleteTask(taskId);
+  });
+
+  // Add other event listeners as needed
+}
+
+
+
+// Helper function to reattach event listeners after task list update
+function reattachEventListeners() {
+  // Reattach click event to the edit button
+  $('.editTaskBtn').off('click').on('click', function () {
+    var taskId = $(this).data('id');
+    populateEditForm(taskId);
+  });
+
+  // Reattach click event to the delete button
+  $('.deleteTaskBtn').off('click').on('click', function () {
+    var taskId = $(this).data('id');
+    deleteTask(taskId);
+  });
+
+  // ... reattach other event listeners as needed
+}
+
+
+
+
+
+
 tasks.forEach(function (task) {
   var taskHtml = '<div class="task" id="task-' + task.id + '" ' +
     // ... rest of your task HTML structure
@@ -266,41 +406,42 @@ function markTaskAsComplete(taskId, buttonElement) {
   $.ajax({
     url: '/tasks/completed/' + taskId,
     method: 'PUT',
-    success: function(response) {
-      $(buttonElement).text('Completed')
-        .addClass('completed-button-style')
-        .prop('disabled', true);
-      // Optionally, you can remove the task from the list or refresh the tasks
+    success: function (response) {
+      // Remove the task element from the dashboard
+      $('#task-' + taskId).fadeOut('slow', function () {
+        $(this).remove();
+        fetchTasks(); // Re-fetch tasks to update the list
+      });
     },
-    error: function(error) {
+    error: function (error) {
       console.error('Error marking task as complete:', error);
     }
   });
 }
 
 
+
+
 function fetchCompletedTasks() {
   $.ajax({
-    url: '/tasks',
+    url: '/tasks/completed',
     method: 'GET',
-    success: function (tasks) {
+    success: function (completedTasks) {
       var completedTaskList = $('#completedTaskList');
-      completedTaskList.empty(); // Clear existing tasks
-      tasks.forEach(function (task) {
-        // Only append tasks that are completed
-        if (task.completed) {
-          var taskHtml = '<div class="completed-task" id="completed-task-' + task.id + '">' +
-            '<h3>' + task.name + '</h3>' +
-            '<p>' + task.description + '</p>' +
-            '<p>Deadline: ' + task.deadline + '</p>' +
-            '<p>Status: Completed</p>' +
-            '</div>';
-          completedTaskList.append(taskHtml);
-        }
-      });
-      // Check if there are completed tasks to show
-      if (completedTaskList.children().length === 0) {
+      completedTaskList.empty();
+
+      if (completedTasks.length === 0) {
         completedTaskList.html('<p>No completed tasks found.</p>');
+      } else {
+        completedTasks.forEach(function (task) {
+          var taskHtml = `<div class="completed-task" id="completed-task-${task.id}">
+                      <h3>${task.name}</h3>
+                      <p>${task.description}</p>
+                      <p>Deadline: ${task.deadline}</p>
+                      <p>Status: Completed</p>
+                  </div>`;
+          completedTaskList.append(taskHtml);
+        });
       }
     },
     error: function (xhr, status, error) {

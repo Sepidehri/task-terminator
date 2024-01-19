@@ -1,11 +1,11 @@
 module.exports = (sequelize, Sequelize) => {
-    const Task   = sequelize.define("tasks", {
+    const Task = sequelize.define("tasks", {
         id: {
             allowNull: false,
             autoIncrement: true,
             primaryKey: true,
             type: Sequelize.INTEGER,
-            defaultValues:0
+            defaultValues: 0
         },
         name: {
             type: Sequelize.STRING,
@@ -19,10 +19,15 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.DATE,
             allowNull: true,
         },
+        reminderDate: {
+            type: Sequelize.DATE,
+            allowNull: true,
+        },
         completed: {
             type: Sequelize.BOOLEAN,
             defaultValue: false,
         },
+
     });
 
     return Task;

@@ -85,15 +85,20 @@ app.post('/login', async (req, res) => {
     return res.status(500).send({ message: error.message });
   }
 });
+
+
 app.post('/logout', (req, res) => {
+  console.log("Logout route hit"); // This line is for debugging
   req.session.destroy(err => {
     if (err) {
+      console.log('Logout error:', err); // Additional debugging
       return res.status(500).send({ message: 'Logout failed. Please try again.' });
     }
-    res.clearCookie('connect.sid'); // Replace 'connect.sid' with the name of your session cookie if different
-    return res.status(200).send({ message: 'Logged out successfully' });
+    res.clearCookie('connect.sid'); // Make sure 'connect.sid' matches your session cookie name
+    return res.redirect('/'); // Redirect to the login page
   });
 });
+
 
 
 
@@ -121,6 +126,32 @@ app.get('/tasks/:taskId', (req, res) => {
     res.status(404).send({ message: 'Task not found.' });
   }
 });
+
+
+
+app.get('/tasks/completed', async (req, res) => {
+  try {
+    const completedTasks = await Task.findAll({
+      where: { completed: true }
+    });
+
+    if (completedTasks.length > 0) {
+      res.status(200).json(completedTasks);
+    } else {
+      res.status(404).send({ message: 'No completed tasks found.' });
+    }
+  } catch (error) {
+    console.error('Error fetching completed tasks:', error);
+    res.status(500).send({ error: 'Internal Server Error' });
+  }
+});
+
+
+
+
+
+
+
 
 
 app.post('/tasks', async (req, res) => {
@@ -168,27 +199,34 @@ app.put('/tasks/completed/:id', async (req, res) => {
 
 
 
-
-app.put('/tasks/:taskId/set-reminder', (req, res) => {
-  // Extract taskId from URL parameters
+app.put('/tasks/:taskId/set-reminder', async (req, res) => {
   const taskId = parseInt(req.params.taskId);
-  // Extract reminderDateTime from request body
   const { reminderDateTime } = req.body;
-  // Find task by taskId
-  const taskIndex = tasks.findIndex(task => task.id === taskId);
-  if (taskIndex > -1) {
-    // Update task with reminderDateTime
-    tasks[taskIndex].reminder = reminderDateTime;
-    // Respond with success message
-    res.status(200).json({
-      message: 'Reminder set successfully',
-      task: tasks[taskIndex]
-    });
-  } else {
-    // If no task is found, respond with an error message
-    res.status(404).json({ message: 'Task not found.' });
+
+  try {
+    // Fetch the task from the database
+    const task = await Task.findByPk(taskId);
+
+    // Check if the task exists
+    if (!task) {
+      return res.status(404).send({ message: 'Task not found.' });
+    }
+
+    // Update the task's reminder date and time
+    task.reminderDateTime = new Date(reminderDateTime);
+
+    // Save the updated task to the database
+    await task.save();
+
+    // Respond with a success message
+    res.status(200).send({ message: 'Reminder set successfully', task });
+  } catch (error) {
+    // Handle any errors that occur
+    console.error('Error setting reminder:', error);
+    res.status(500).send({ error: 'Internal Server Error' });
   }
 });
+
 
 
 
@@ -249,6 +287,9 @@ app.delete('/tasks/:id', async (req, res) => {
     res.status(500).json({ message: 'Internal server error.' });
   }
 });
+
+
+
 
 // Server Start
 app.listen(3000, () => {
