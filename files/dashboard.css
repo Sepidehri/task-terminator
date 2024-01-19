@@ -1,13 +1,17 @@
 /* Apply basic styling to the body */
 body {
-    background-color: #fff;
+   background-color: transparent; 
     color: #333;
     font-family: Open Sans;
     margin: 0;
     padding: 0;
     display: flex;
     min-height: 100vh;
+    background-image: url("https://wallpapers.com/images/high/black-gradient-background-nyu2n3j9qppbl9ro.webp");
+    background-size: cover; /* Cover ensures the entire menu is filled */
+    background-repeat: no-repeat;
 }
+
 
 
 #sideMenu {
@@ -48,7 +52,7 @@ body {
 /* Style for the main buttons */
 button {
     background-color: #7434a4;
-    color: #fff;
+    color: #171717;
     border: none;
     padding: 10px 20px;
     text-align: center;
@@ -88,8 +92,8 @@ input[type=text], textarea {
 
 /* Style for the divs */
 div {
-    background-color: #f7f7f7;
-    padding: 20px;
+    background-color: transparent;
+    padding: 5px;
     border-radius: 5px;
 }
 
@@ -110,6 +114,7 @@ h2, h3 {
     text-align: left;
     margin-bottom: 15px; /* Adjusted margin-bottom value */
     background-color: transparent;
+    margin-right: 20px;
 }
 
 #welcomeUser h2 {
@@ -125,10 +130,12 @@ h2, h3 {
     padding: 20px;
     border-radius: 5px;
     background-color: transparent;
+    border-color: #7434a4;
    
 }
  #taskForm button {
-    background-color: white;
+    background-color: transparent;
+    color: #99989a;
    
 }
 
@@ -141,20 +148,24 @@ h2, h3 {
     padding: 8px;
     margin: 8px 0;
     border-radius: 4px;
-    border: 1px solid #ccc;
+    border: 1px solid #7434a4;
     box-sizing: border-box;
+    background-color: transparent;
+    color: #ccc;
 }
 
 /* Task List Container Styles */
 #taskList {
     margin: 20px auto; /* Center container on the page */
     background-color: transparent; 
+    max-width: 600px; 
+    min-height: 200px;
 }
 
 
 /* Style for elements inside each task */
 .task h3, .task p {
-    background-color: #f7f7f7;
+    background-color: rgb(105, 105, 105);
     padding: 8px;
     margin: 8px 0;
     border-radius: 4px;
@@ -162,11 +173,11 @@ h2, h3 {
 }
 /* Style for individual tasks */
 .task {
-    background-color: #fff;
+    background-color: transparent;
     border: 1px solid #ccc;
     border-radius: 4px;
-    padding: 15px;
-    margin-bottom: 15px; /* Space between each task */
+    padding: 5px;
+    margin-bottom: 5px; /* Space between each task */
    
 }
 
@@ -184,6 +195,7 @@ h2, h3 {
     border: 1px solid #ccc;
     border-radius: 4px;
     display: block;
+    background-color: #fff;
 }
 
 .completed-button-style {

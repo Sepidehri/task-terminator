@@ -1,3 +1,4 @@
+
 module.exports = (sequelize, Sequelize) => {
     const Task = sequelize.define("tasks", {
         id: {
@@ -29,6 +30,13 @@ module.exports = (sequelize, Sequelize) => {
         },
 
     });
+
+    Task.associate = (models) => {
+        Task.hasOne(models.Reminder, {
+            foreignKey: 'taskId',
+            onDelete: 'CASCADE',
+        });
+    };
 
     return Task;
 };

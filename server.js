@@ -12,6 +12,7 @@ const cookieParser = require('cookie-parser');
 const db = require("./models");
 const User = db.user;
 const Task = db.task;
+const Reminder = db.reminder;
 var session = require('express-session')
 app.use(session({
   secret: 'keyboard cat',

@@ -24,4 +24,5 @@ db.sequelize = sequelize;
 
 db.user = require("./user.model.js")(sequelize, Sequelize);
 db.task = require("./tasks.model.js")(sequelize, Sequelize);
+db.reminder = require("./reminder.model.js")(sequelize, Sequelize);
 module.exports = db;

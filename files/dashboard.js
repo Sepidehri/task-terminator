@@ -61,8 +61,8 @@ $(document).ready(function () {
     });
     // You might want to store the task ID so you know which task to set the reminder for
     var taskId = $(this).data('id');
-    setupReminder(taskId); // Call the function to set up the reminder
     $('#reminderForm').data('taskId', taskId);
+    setupReminder(taskId); // Call the function to set up the reminder
   });
   $(document).on('click', '.completeTaskBtn', function () {
     console.log('Complete button clicked');
@@ -357,7 +357,7 @@ function deleteTask(taskId) {
       // Remove the task from the UI
       $('#task-' + taskId).remove();
       // Optionally, show feedback to the user that the task was deleted
-      $('#userFeedback').text('Task deleted successfully').show().fadeOut(3000);
+      //$('#userFeedback').text('Task deleted successfully').show().fadeOut(3000);
     },
     error: function (xhr, status, error) {
       // Handle any errors that occur during the request
@@ -392,7 +392,7 @@ function updateTask(taskId) {
       fetchTasks(); // Re-fetch the tasks and update the DOM
       $('#taskForm').hide();
       editingTaskId = null; // Reset the editing state
-      $('#userFeedback').text('Task updated successfully').show().fadeOut(3000);
+     // $('#userFeedback').text('Task updated successfully').show().fadeOut(3000);
     },
     error: function (xhr, status, error) {
       console.error('Error updating task:', status, error);
