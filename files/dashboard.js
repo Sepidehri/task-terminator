@@ -43,8 +43,8 @@ $(document).ready(function () {
     });
     // You might want to store the task ID so you know which task to set the reminder for
     var taskId = $(this).data('id');
-    setupReminder(taskId); // Call the function to set up the reminder
     $('#reminderForm').data('taskId', taskId);
+    setupReminder(taskId); // Call the function to set up the reminder
   });
   $(document).on('click', '.completeTaskBtn', function () {
     console.log('Complete button clicked');
@@ -64,39 +64,43 @@ function setupReminder(taskId) {
   });
   // Focus on the reminder date field
   $('#reminderDate').focus();
-}
-// Function to handle setting the reminder
-$('#saveReminderBtn').click(function () {
-  var taskId = $('#reminderForm').data('taskId');
-  var reminderDate = $('#reminderDate').val();
-  var reminderTime = $('#reminderTime').val();
-  // Validate the reminder date and time
-  if (!reminderDate || !reminderTime) {
-    $('#userFeedback').text('Please select both date and time for the reminder').show();
-    return; // Exit the function if validation fails
-  }
-  // Combine date and time to create a full datetime string
-  var reminderDateTime = reminderDate + 'T' + reminderTime;
-  // AJAX call to server to set reminder
-  $.ajax({
-    url: '/tasks/' + taskId + '/set-reminder',
-    method: 'PUT',
-    contentType: 'application/json',
-    data: JSON.stringify({ reminderDateTime: reminderDateTime }),
-    success: function (response) {
-      // Hide the reminder form and show feedback
-      $('#reminderForm').hide();
-      $('#reminderDate').val(''); // Reset the date field
-      $('#reminderTime').val(''); // Reset the time field
-      $('#userFeedback').text('Reminder set successfully').show().fadeOut(3000);
-      // Additional code to handle the response
-    },
-    error: function (xhr, status, error) {
-      console.error('Error setting reminder:', error);
-      $('#userFeedback').text('Error setting reminder').show();
+
+  // Function to handle setting the reminder
+  $('#saveReminderBtn').click(function () {
+    var taskId = $('#reminderForm').data('taskId');
+    var reminderDate = $('#reminderDate').val();
+    var reminderTime = $('#reminderTime').val();
+    // Validate the reminder date and time
+    if (!reminderDate || !reminderTime) {
+      $('#userFeedback').text('Please select both date and time for the reminder').show();
+      return; // Exit the function if validation fails
     }
+    // Combine date and time to create a full datetime string
+    var reminderDateTime = reminderDate + 'T' + reminderTime;
+    // AJAX call to server to set reminder
+    $.ajax({
+      url: '/tasks/' + taskId + '/set-reminder',
+      method: 'PUT',
+      contentType: 'application/json',
+      data: JSON.stringify({ reminderDateTime: reminderDateTime }),
+      success: function (response) {
+        // Hide the reminder form and show feedback
+        $('#reminderForm').hide();
+        $('#reminderDate').val(''); // Reset the date field
+        $('#reminderTime').val(''); // Reset the time field
+        $('#userFeedback').text('Reminder set successfully').show().fadeOut(3000);
+
+        // Additional code to handle the response
+      },
+      error: function (xhr, status, error) {
+        console.error('Error setting reminder:', error);
+        $('#userFeedback').text('Error setting reminder').show();
+      }
+    });
   });
-});
+
+}
+
 function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }

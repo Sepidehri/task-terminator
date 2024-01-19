@@ -12,6 +12,7 @@ const cookieParser = require('cookie-parser');
 const db = require("./models");
 const User = db.user;
 const Task = db.task;
+const Reminder = db.reminder;
 var session = require('express-session')
 app.use(session({
   secret: 'keyboard cat',
@@ -169,7 +170,8 @@ app.put('/tasks/completed/:id', async (req, res) => {
 
 
 
-app.put('/tasks/:taskId/set-reminder', (req, res) => {
+app.put('/tasks/:taskId/set-reminder', async(req, res) => {
+  /*
   // Extract taskId from URL parameters
   const taskId = parseInt(req.params.taskId);
   // Extract reminderDateTime from request body
@@ -187,7 +189,30 @@ app.put('/tasks/:taskId/set-reminder', (req, res) => {
   } else {
     // If no task is found, respond with an error message
     res.status(404).json({ message: 'Task not found.' });
+  }*/
+  try {
+    const { reminderDateTime } = req.body;
+    const taskId = parseInt(req.params.taskId);
+
+    // Find or create the task
+    const task = await Task.findByPk(taskId );
+
+    // Create or update the associated reminder
+    const reminder = await Reminder.create({
+      taskId: task.id,
+      reminderDateTime: new Date(reminderDateTime),
+    });
+    //reminder.belongsTo(task);
+    //task.associate(reminder);
+    // Respond with success message
+    res.status(200).json({
+      message: 'Reminder set successfully',
+    });
+  } catch (error) {
+    console.error('Error setting reminder:', error);
+    res.status(500).json({ message: 'Internal server error.' });
   }
+
 });
 
 
