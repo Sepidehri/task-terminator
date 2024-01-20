@@ -44,6 +44,19 @@
     
 
     <!-- Task List Container -->
+    <div>
+        <div id ="filter" class="filter">
+            <label for="filterBy">Filter by:</label>
+            <select id="filterBy">
+                <option value="all">All Tasks</option>
+                <option value="work">Work</option>
+                <option value="personal">Personal</option>
+                <option value="study">Study</option>
+                <option value="completed">Completed Tasks</option>
+                <option value="open">Open Tasks</option>
+                <option value="closed">Past Deadline</option>
+            </select>
+        </div>
 
     <div id="taskList"> <!-- Task List will be dynamically populated here -->
         <div class="task"> </div>
@@ -85,10 +98,15 @@
                     fetchCompletedTasks();
                     $("#completedTaskList").toggle(); // Toggle the display of the completed tasks list
                 });
+                $('#filterBy').change(function () {
+                    var selectedFilter = $(this).val();
+                    fetchTasks(selectedFilter);
+                });
             });
         </script>
         <script src="dashboard.js"></script>
-
+    </div>
+    </div>
 </body>
 
 </html>

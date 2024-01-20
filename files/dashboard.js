@@ -43,6 +43,8 @@ $(document).ready(function () {
       saveTask();
     }
   });
+
+  $(document).on
   $(document).on('click', '.deleteTaskBtn', function () {
     var taskId = $(this).data('id');
     deleteTask(taskId);
@@ -204,6 +206,7 @@ function saveTask() {
   //var category = $('#taskCategory').options[$('#taskCategory').selectedIndex()].text;
   var category = $('#taskCategory').val();
 
+
   if (!name || !description || !deadline ||! category) {
     $('#userFeedback').text('Please fill in all fields').show();
     return;
@@ -230,8 +233,6 @@ function saveTask() {
   });
 }
 
-
-
 $(document).on('click', '#logoutBtn', function () {
   $.ajax({
     url: '/logout',
@@ -251,9 +252,16 @@ $(document).on('click', '#logoutBtn', function () {
 
 
 
-function fetchTasks() {
+function fetchTasks(filter) {
+  let url;
+  if (filter ==='all' || !filter){
+    url = '/tasks'
+  }else{
+    url ='/tasks/category/' + filter;
+  }
   $.ajax({
-    url: '/tasks',
+    //url: '/tasks',
+    url: url,
     method: 'GET',
     success: function (tasks) {
       var taskList = $('#taskList');
@@ -344,8 +352,6 @@ function reattachEventListeners() {
   // Add other event listeners as needed
 }
 
-
-
 // Helper function to reattach event listeners after task list update
 function reattachEventListeners() {
   // Reattach click event to the edit button
@@ -362,11 +368,6 @@ function reattachEventListeners() {
 
   // ... reattach other event listeners as needed
 }
-
-
-
-
-
 
 tasks.forEach(function (task) {
   var taskHtml = '<div class="task" id="task-' + task.id + '" ' +
@@ -476,3 +477,6 @@ function fetchCompletedTasks() {
     }
   });
 }
+
+
+
