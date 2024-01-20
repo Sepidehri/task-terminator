@@ -20,7 +20,7 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.DATE,
             allowNull: true,
         },
-        reminderDate: {
+        reminderDateTime: {
             type: Sequelize.DATE,
             allowNull: true,
         },
@@ -28,6 +28,10 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.BOOLEAN,
             defaultValue: false,
         },
+        category :{
+            type: Sequelize.STRING,
+            allowNull: true
+        }
 
     });
 
