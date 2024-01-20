@@ -23,14 +23,29 @@ app.use(session({
   resave: false,
   saveUninitialized: true
 }))
+
+
 app.use(express.static(path.join(__dirname, 'files')));
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(express.json())
+
+// Example middleware to check if the user is authenticated
+const authenticateUser = (req, res, next) => {
+  if (req.session.username) {
+    // User is authenticated, proceed to the next middleware or route handler
+    next();
+  } else {
+    // User is not authenticated, redirect to the login page or return an error response
+    res.status(401).json({ error: 'Unauthorized' });
+  }
+};
+
 // Routes for static pages
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/files/register.html');
 });
+
 // User account route - serves the account page and should be protected to ensure only logged-in users can access it
 app.get('/dashboard', (req, res) => {
   if (!req.session.username) {
@@ -107,17 +122,33 @@ app.post('/logout', (req, res) => {
 
 
 
-app.get('/tasks', async (req, res) => {
+app.get('/tasks',authenticateUser, async (req, res) => {
   //res.status(200).json(tasks);
-  try {
-    // Fetch all tasks from the database
-    const tasks = await Task.findAll();
 
+  try {
+    // Assuming you have the userId stored in the session
+    const username = req.session.username;
+    console.log(username);
+
+    // Fetch all tasks from the database
+    const tasks = await Task.findAll({
+      where: {
+        username: {
+          [Sequelize.Op.like]: username
+        }
+      }
+    });
+
+    // Now you can use the tasks variable containing the results
+    console.log(tasks);
+
+    // Send the tasks as a response or perform other operations
     res.status(200).json(tasks);
   } catch (error) {
     console.error('Error fetching tasks:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
+
 });
 
 
@@ -133,45 +164,23 @@ app.get('/tasks/:taskId', (req, res) => {
 });
 
 
-
-app.get('/tasks/completed', async (req, res) => {
-  try {
-    const completedTasks = await Task.findAll({
-      where: { completed: true }
-    });
-
-    if (completedTasks.length > 0) {
-      res.status(200).json(completedTasks);
-    } else {
-      res.status(404).send({ message: 'No completed tasks found.' });
-    }
-  } catch (error) {
-    console.error('Error fetching completed tasks:', error);
-    res.status(500).send({ error: 'Internal Server Error' });
-  }
-});
-
-
-
-
-
-
-
-
-
-app.post('/tasks', async (req, res) => {
+app.post('/tasks',authenticateUser, async (req, res) => {
   const { name, description, deadline ,category } = req.body;
   if (!name) {
     return res.status(400).json({ message: 'Task name is required.' });
   }
 
   try {
+    const username = req.session.username;
+    console.log('username');
+
     const newTask = await Task.create({
       name,
       description,
       deadline,
       category,
-      completed: false
+      completed: false,
+      username
     });
 
     res.status(201).json(newTask);
@@ -295,15 +304,97 @@ app.delete('/tasks/:id', async (req, res) => {
   }
 });
 
-app.get('/tasks/category/:category', async (req, res) => {
+app.get('/tasks/category/completed', authenticateUser, async (req, res) => {
+  try {
+    const username = req.session.username;
+    const completedTasks = await Task.findAll({
+      where: {
+        username: {
+          [Sequelize.Op.like]: username
+        },
+        completed: true,
+      }
+    });
+
+    if (completedTasks.length > 0) {
+      res.status(200).json(completedTasks);
+    } else {
+      res.status(404).send({ message: 'No completed tasks found for the user.' });
+    }
+  } catch (error) {
+    console.error('Error fetching completed tasks:', error);
+    res.status(500).send({ error: 'Internal Server Error' });
+  }
+});
+
+app.get('/tasks/category/open', authenticateUser, async (req, res) => {
+  try {
+    const username = req.session.username;
+    const openTasks = await Task.findAll({
+      where: {
+        username: {
+          [Sequelize.Op.like]: username
+        },
+        completed: false,
+      }
+    });
+
+    if (openTasks.length > 0) {
+      res.status(200).json(openTasks);
+    } else {
+      res.status(404).send({ message: 'No open tasks found for the user.' });
+    }
+  } catch (error) {
+    console.error('Error fetching open tasks:', error);
+    res.status(500).send({ error: 'Internal Server Error' });
+  }
+});
+
+app.get('/tasks/category/closed', authenticateUser, async (req, res) => {
+  try {
+    const username = req.session.username;
+
+    // For debugging purposes, log the username to verify it's correct
+    console.log('Username:', username);
+
+    const pastDeadlineTasks = await Task.findAll({
+      where: {
+        username: {
+          [Sequelize.Op.like]: username
+        },
+        //completed: false,
+        deadline: {
+          [Sequelize.Op.lt]: new Date() // Find tasks with a deadline in the past
+        }
+      }
+    });
+
+    if (pastDeadlineTasks.length > 0) {
+      res.status(200).json(pastDeadlineTasks);
+    } else {
+      res.status(404).send({ message: 'No tasks past the deadline found for the user.' });
+    }
+  } catch (error) {
+    console.error('Error fetching past deadline tasks:', error);
+    res.status(500).send({ error: 'Internal Server Error' });
+  }
+});
+
+
+app.get('/tasks/category/:category', authenticateUser, async (req, res) => {
   const category = req.params.category;
+  const username = req.session.username;
 
   try {
+    const username = req.session.username;
     const tasks = await Task.findAll({
       attributes: ['id', 'name', 'description', 'deadline', 'reminderDateTime', 'completed', 'category', 'createdAt', 'updatedAt'],
       where: {
         category: {
           [Sequelize.Op.like]: `%${category}%`
+        },
+        username: {
+          [Sequelize.Op.like]: username
         }
       }
     });
@@ -314,6 +405,10 @@ app.get('/tasks/category/:category', async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
+
+
+
 /* DEBUGGING USE
 cron.schedule('* * * * *', async () => {
     console.log("Looking for reminders");

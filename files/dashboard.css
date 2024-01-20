@@ -154,10 +154,23 @@ h2, h3 {
     color: #343434;
 }
 
+.filter{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin: 20px auto; /* Center container on the page */
+    background-color: rgba(119, 16, 180, 0.87);
+    height: 30px;
+    width:600px;
+
+}
+
 /* Task List Container Styles */
 #taskList {
     margin: 20px auto; /* Center container on the page */
-    background-color: transparent; 
+    background-color: transparent;
+    width: 600px;
     max-width: 600px; 
     min-height: 200px;
 }

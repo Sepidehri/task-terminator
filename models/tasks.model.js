@@ -31,6 +31,10 @@ module.exports = (sequelize, Sequelize) => {
         category :{
             type: Sequelize.STRING,
             allowNull: true
+        },
+        username: {
+            type :Sequelize.STRING,
+            allowNull: false
         }
 
     });
