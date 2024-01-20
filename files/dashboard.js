@@ -197,7 +197,7 @@ function saveTask() {
       $('#taskDeadline').val('');
       editingTaskId = null;
       $('#taskForm').hide();
-      $('#userFeedback').text('Task saved successfully').show().fadeOut(3000);
+     // $('#userFeedback').text('Task saved successfully').show().fadeOut(3000);
     },
     error: function (xhr, status, error) {
       console.error('Error saving task:', status, error);
