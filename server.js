@@ -17,6 +17,7 @@ const Reminder = db.reminder;
 const cron = require('node-cron');
 
 var session = require('express-session')
+const {Op, Sequelize} = require("sequelize");
 app.use(session({
   secret: 'keyboard cat',
   resave: false,
@@ -159,7 +160,7 @@ app.get('/tasks/completed', async (req, res) => {
 
 
 app.post('/tasks', async (req, res) => {
-  const { name, description, deadline } = req.body;
+  const { name, description, deadline ,category } = req.body;
   if (!name) {
     return res.status(400).json({ message: 'Task name is required.' });
   }
@@ -169,6 +170,7 @@ app.post('/tasks', async (req, res) => {
       name,
       description,
       deadline,
+      category,
       completed: false
     });
 
@@ -239,7 +241,7 @@ app.put('/tasks/:id', async (req, res) => {
   const taskId = parseInt(req.params.id);
 
   // Extract the updated task details from the request body
-  const { name, description, deadline, completed } = req.body;
+  const { name, description, deadline, completed, category } = req.body;
 
   try {
     // Use Sequelize to find the task by ID
@@ -255,6 +257,7 @@ app.put('/tasks/:id', async (req, res) => {
     task.description = description;
     task.deadline = deadline;
     task.completed = completed;
+    task.category = category;
 
     // Save the updated task to the database
     await task.save();
@@ -292,8 +295,25 @@ app.delete('/tasks/:id', async (req, res) => {
   }
 });
 
+app.get('/tasks/category/:category', async (req, res) => {
+  const category = req.params.category;
 
+  try {
+    const tasks = await Task.findAll({
+      attributes: ['id', 'name', 'description', 'deadline', 'reminderDateTime', 'completed', 'category', 'createdAt', 'updatedAt'],
+      where: {
+        category: {
+          [Sequelize.Op.like]: `%${category}%`
+        }
+      }
+    });
 
+    res.json(tasks);
+  } catch (error) {
+    console.error('Error fetching tasks by category:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 /* DEBUGGING USE
 cron.schedule('* * * * *', async () => {
     console.log("Looking for reminders");

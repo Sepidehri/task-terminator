@@ -201,8 +201,10 @@ function saveTask() {
   var name = $('#taskName').val();
   var description = $('#taskDescription').val();
   var deadline = $('#taskDeadline').val();
+  //var category = $('#taskCategory').options[$('#taskCategory').selectedIndex()].text;
+  var category = $('#taskCategory').val();
 
-  if (!name || !description || !deadline) {
+  if (!name || !description || !deadline ||! category) {
     $('#userFeedback').text('Please fill in all fields').show();
     return;
   }
@@ -211,7 +213,7 @@ function saveTask() {
     url: '/tasks',
     method: 'POST',
     contentType: 'application/json',
-    data: JSON.stringify({ name, description, deadline }),
+    data: JSON.stringify({ name, description, deadline, category }),
     success: function (response) {
       fetchTasks();
       $('#taskName').val('');
@@ -405,11 +407,13 @@ function updateTask(taskId) {
   var name = $('#taskName').val();
   var description = $('#taskDescription').val();
   var deadline = $('#taskDeadline').val();
+  //var category = $('#taskCategory').options[$('#taskCategory').selectedIndex()].text;
+  var category = $('#taskCategory').val();
   $.ajax({
     url: '/tasks/' + taskId,
     method: 'PUT',
     contentType: 'application/json',
-    data: JSON.stringify({ name, description, deadline }),
+    data: JSON.stringify({ name, description, deadline, category }),
     success: function (response) {
       fetchTasks(); // Re-fetch the tasks and update the DOM
       $('#taskForm').hide();
