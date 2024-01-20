@@ -230,3 +230,8 @@ h2, h3 {
     background-color: transparent;
     color: #343434;
 }
+#userFeedback{
+    background-color: transparent;
+    color: #56297D;
+    font-size: small;
+}
