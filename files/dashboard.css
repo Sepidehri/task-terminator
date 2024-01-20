@@ -7,8 +7,8 @@ body {
     padding: 0;
     display: flex;
     min-height: 100vh;
+    align-content: center;
 }
-
 
 
 #sideMenu {
@@ -22,17 +22,17 @@ body {
     display: flex;
     flex-direction: column; /* Stack children vertically */
     justify-content: flex-start; /* Align children to the start of the flex container */
-    align-items: stretch; /
+    align-items: center; /
 }
 
 #sideMenu button {
     width: fit-content;
-    border-radius: 50px;
-    margin-bottom: 10px; /* Spacing between buttons */
-    background-color: transparent;
-    color: #7434a4;
-    border: 2px #7434a4;
+    border-radius: 10px;
+    background-color: #19141b;
+    color: #e6cef7;
+    border: 2px #e6cef7;
     box-shadow: white;
+    transition: background-color 0.3s ease;
 }
 #sideMenu button:hover {
     background-color: #E6E1E5; /* Darker shade for hover */
@@ -51,7 +51,7 @@ body {
 button {
     background-color: #7f39b5;
     color: white;
-    border: none;
+    border: 2px #e6cef7;
     padding: 10px 20px;
     text-align: center;
     text-decoration: none;
@@ -67,11 +67,15 @@ button {
 #saveTaskBtn{
     margin-right: 20px; /* Adjust the value as needed */
     background-color: #5a297a;
+    border-radius: 0;
+    color: white;
     
 }
 #cancelTaskBtn{
     margin-right: 20px; /* Adjust the value as needed */
     background-color: #5a297a;
+    border-radius: none;
+    color: white;
 }
 
 button:hover {
@@ -118,10 +122,9 @@ h2, h3 {
 
 #welcomeUser h2 {
     font-size: 32px;
-    color: #7434a4;
+    color: #e6cef7;
     margin-bottom: 7px;
 }
-
 /* Adjustments for the task form */
 #taskForm {
     max-width: 300px; 
@@ -134,7 +137,7 @@ h2, h3 {
 }
  #taskForm button {
     background-color: #7434a4;
-    color: #181818;
+    color: white;
    
 }
 
