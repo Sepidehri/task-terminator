@@ -20,7 +20,7 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.DATE,
             allowNull: true,
         },
-        reminderDate: {
+        reminderDateTime: {
             type: Sequelize.DATE,
             allowNull: true,
         },

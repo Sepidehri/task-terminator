@@ -1,5 +1,6 @@
 let editingTaskId = null;
 
+
 function requestNotificationPermission() {
   Notification.requestPermission().then(function (permission) {
     if (permission === "granted") {
@@ -85,8 +86,6 @@ function setupReminder(taskId) {
 }
 
 
-
-
 $(document).on('click', '#saveReminderBtn', function () {
   var taskId = $('#reminderForm').data('taskId');
   var reminderDate = $('#reminderDate').val();
@@ -117,6 +116,8 @@ $(document).on('click', '#saveReminderBtn', function () {
       $('#reminderDate').val('');
       $('#reminderTime').val('');
       $('#userFeedback').text('Reminder set successfully').show().fadeOut(3000);
+      //primitive solution so the reminder alerts will trigger everytime a new reminder is  set
+      location.reload();
     },
     error: function (xhr, status, error) {
       console.error('Error setting reminder:', error);
@@ -140,9 +141,30 @@ function scheduleReminder(task) {
   var now = new Date().getTime();
   var timeUntilReminder = reminderTime - now;
 
+  /*if (timeUntilReminder > 0) {
+    setTimeout(async function () {
+      window.alert('Reminder for task: ' + task.name);
+      window.showNotification('Reminder for task: ' + task.name);
+
+    }, timeUntilReminder);
+  }*/
   if (timeUntilReminder > 0) {
-    setTimeout(function () {
-      showNotification('Reminder for task: ' + task.name);
+    setTimeout(async function () {
+      if ('Notification' in window) {
+        // Request permission if not granted
+        if (Notification.permission !== 'granted') {
+          await Notification.requestPermission();
+        }
+        // Check permission again
+        if (Notification.permission === 'granted') {
+          new Notification('Task Reminder', {
+            body: `Reminder for task: ${task.name}`,
+          });
+        }
+      } else {
+        // Fallback for browsers that don't support the Notification API
+        alert('Reminder for task: ' + task.name);
+      }
     }, timeUntilReminder);
   }
 }
@@ -236,6 +258,8 @@ function fetchTasks() {
       taskList.empty();
 
       tasks.forEach(function (task) {
+          scheduleReminder(task);
+
         // Determine button label and class based on completion status
         var buttonLabel = task.completed ? 'Completed' : 'Mark as Complete';
         var buttonClass = task.completed ? 'completed-button-style' : 'completeTaskBtn';
@@ -270,14 +294,12 @@ function fetchTasks() {
         `;
         taskList.append(taskHtml);
 
-        if (task.reminderDateTime) {
-          scheduleReminder(task);
-        }
 
-        // Set reminders for tasks with reminder date and time
+
+       /* // Set reminders for tasks with reminder date and time
         if (task.reminderDateTime) {
           scheduleReminder(task);
-        }
+        }*/
       });
 
       // Reattach event listeners to the buttons

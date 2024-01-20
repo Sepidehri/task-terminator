@@ -7,12 +7,15 @@ const http = require('http');
 const bodyParser = require('body-parser');
 const axios = require('axios');
 const jwt = require('jsonwebtoken');
+const webpush = require('web-push');
 const bcrypt = require('bcrypt');
 const cookieParser = require('cookie-parser');
 const db = require("./models");
 const User = db.user;
 const Task = db.task;
 const Reminder = db.reminder;
+const cron = require('node-cron');
+
 var session = require('express-session')
 app.use(session({
   secret: 'keyboard cat',
@@ -289,6 +292,32 @@ app.delete('/tasks/:id', async (req, res) => {
   }
 });
 
+
+
+/* DEBUGGING USE
+cron.schedule('* * * * *', async () => {
+    console.log("Looking for reminders");
+    // Get tasks from your database and send push notifications
+    const tasks = await Task.findAll({ attributes: ['id', 'name', 'description', 'deadline', 'reminderDateTime']});
+    //console.log(tasks);
+
+    tasks.forEach((task) => {
+     // console.log(task.name)
+      var reminderTime = new Date(task.reminderDateTime).getTime();
+      console.log("reminderTime :" + reminderTime);
+      var now = new Date().getTime();
+      //console.log("current Time" + now)
+      var timeUntilReminder = reminderTime - now;
+     //console.log("difference"+ timeUntilReminder)
+
+
+      if (timeUntilReminder > 0) {
+        setTimeout(function () {
+          console.log("REMINDER!!!!")
+        }, timeUntilReminder);
+      }
+});
+});*/
 
 
 
