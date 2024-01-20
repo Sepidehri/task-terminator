@@ -29,7 +29,7 @@ app.use(cookieParser());
 app.use(express.json())
 // Routes for static pages
 app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/register.html');
+  res.sendFile(__dirname + '/files/register.html');
 });
 // User account route - serves the account page and should be protected to ensure only logged-in users can access it
 app.get('/dashboard', (req, res) => {
@@ -37,7 +37,7 @@ app.get('/dashboard', (req, res) => {
     // If there is no session, redirect to the login page or send an unauthorized response
     return res.redirect('/');
   }
-  res.sendFile(__dirname + '/dashboard.html');
+  res.sendFile(__dirname + '/files/dashboard.html');
 });
 app.get('/account-detail', async (req, res) => {
   if (!req.session.username) {
@@ -60,7 +60,7 @@ app.get('/account-detail', async (req, res) => {
 });
 // User Authentication Routes
 app.get('/signin', (req, res) => {
-  res.sendFile(__dirname + '/signin.html');
+  res.sendFile(__dirname + '/files/signin.html');
 });
 app.post('/signup', async (req, res) => {
   try {
