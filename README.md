@@ -6,9 +6,12 @@ Overview
 Task Terminator is a task management system designed to streamline the process of managing tasks. This application allows users to create an account, add tasks, set deadlines, mark tasks as complete, and much more.
 
 Development Environment
+
 For the best experience in developing and maintaining Task Terminator, we recommend using a powerful Integrated Development Environment (IDE) that supports JavaScript and Node.js development. These environments provide useful features such as code completion, debugging tools, and extensions to enhance productivity.
-We recommend using Visual Studio as the Integrated Development Environment (IDE) for developing and maintaining Task Terminator. 
+We recommend using Visual Studio as IDE for developing and maintaining Task Terminator. 
+
 Installation
+
 Prerequisites
 Visual Studio or another IDE that supports JavaScript and Node.js development
 Node.js and npm installed
@@ -132,6 +135,7 @@ To be able to access the application using a browser:
   
 
 Usage
+
 After installation, you can use Task Terminator as follows:
 Account Creation:
 Navigate to http://localhost:3000 and sign up for an account.
@@ -143,6 +147,7 @@ Task Management:
 Tasks can be marked as complete, edited, or deleted as per your needs.
 Categorization and Prioritization:
 Organize tasks into categories and set priorities for better management.
+
 MoSCoW Criteria
 Must-Have
 M1: Account creation for system access.
