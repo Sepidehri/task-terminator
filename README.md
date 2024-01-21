@@ -96,7 +96,7 @@ Alternative: MySQL Workbench
 For those who prefer a graphical interface, MySQL Workbench is an excellent alternative. It provides a user-friendly environment for database design, administration, and management.
 Download MySQL Workbench from the official website(https://dev.mysql.com/downloads/workbench/).
 Install and open MySQL Workbench.
-Connect to your MySQL server instance.
+Connect to the MySQL server instance.
 Create a new schema (starpath) by right-clicking on the 'Schemas' area and selecting 'Create Schema'.
 Use the built-in tools to design and create your tables (tasks, users, etc.).
 
@@ -119,8 +119,9 @@ Manage User Permissions
   Replace `app_user` and `password` with your chosen username and password.
 
 Or use the dummy account:
-E-mail: ttermdummy@gmail.com
-Password: campus09
+
+       E-mail: ttermdummy@gmail.com
+       Password: campus09
 
 Start the Application
 - Set up the `.env` file with the MySQL user and database information.
@@ -149,20 +150,24 @@ Categorization and Prioritization:
 Organize tasks into categories and set priorities for better management.
 
 MoSCoW Criteria
+
 Must-Have
 M1: Account creation for system access.
 M2: Ability to create tasks.
 M3: Setting deadlines for tasks.
 M4: Marking tasks as complete.
 M5: Deleting tasks.
+
 Should-Have
 S1: Categorizing tasks (work, personal, etc.).
 S2: Setting reminders for tasks.
 S3: Modifying tasks after creation.
 S4: Prioritizing tasks and adding sub-tasks or notes.
+
 Could-Have
 C1: Syncing tasks with external calendars (Google Calendar, Outlook).
 C2: Sharing tasks for collaborative work.
+
 Won't-Have
 Complex project management features like Gantt charts or resource allocation.
 
