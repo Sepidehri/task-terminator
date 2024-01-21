@@ -25,6 +25,8 @@ body {
     align-items: center; 
     height: 100vh;
     
+
+    
 }
 
 #sideMenu button {
@@ -176,7 +178,7 @@ h2, h3 {
     width:570px;
     padding: 10px;
     border-radius: 5px;
-    justify-content: space-between;
+    gap : 30px;
    
     }
 
