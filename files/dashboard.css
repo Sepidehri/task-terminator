@@ -155,7 +155,8 @@ h2, h3 {
     background-color: #7434a4;
     color: white;
     display: inline-block;
-    width: 200px;
+    width: 120px;
+    margin-right: 10px;
    
 }
 
@@ -275,7 +276,7 @@ h2, h3 {
    
 }
  #reminderForm button {
-    margin-right: 10px;
+    
     background-color: #7434a4;
     color: white;
     border: 2px #e6cef7;
@@ -284,10 +285,11 @@ h2, h3 {
     text-decoration: none;
     display: inline-block;
     font-size: 16px;
-    margin: 4px 2px;
     cursor: pointer;
     border-radius: 4px;
     transition: background-color 0.3s ease;
+    width: 300px;
+    margin-right: 10px;
 
 }
 #reminderForm input[type="text"], 
