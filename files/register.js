@@ -16,7 +16,7 @@ $(document).on('click', '#loginBtn', function () {
   var password = document.getElementById("logPassword").value;
 
   if (username == "" || password == "") {
-    document.getElementById("errorMsg").innerHTML = "Please fill the required fields"
+    displayMessage("Please fill the required fields");
     return false;
   }
 
@@ -30,12 +30,28 @@ $(document).on('click', '#loginBtn', function () {
       window.location.href = "/dashboard";
     },
     error: function (xhr, status, error) {
-      document.getElementById("errorMsg").innerHTML = "Invalid username or password.";
+      displayMessage("Invalid username or password.");
     }
   });
 
   return false; // Prevent form submission
 });
+
+
+
+function displayMessage(message) {
+  const errorMsgElement = $('#errorMsg');
+  errorMsgElement.html(message).show();
+
+  // Use jQuery's fadeOut to slowly fade the message after 2 seconds
+  setTimeout(function() {
+    errorMsgElement.fadeOut('slow');
+  }, 2000);
+}
+
+
+
+
 
 $(document).on('click', '#signupBtn', function () {
   var email = document.getElementById("signEmail").value;
@@ -43,14 +59,13 @@ $(document).on('click', '#signupBtn', function () {
   var password = document.getElementById("signPassword").value;
 
   if (username == "" || email == "" || password == "") {
-    document.getElementById("errorMsg").innerHTML = "Please fill the required fields"
+    displayMessage("Please fill the required fields");
+    return false;
+  } else if (password.length < 8) {
+    displayMessage("Your password must include at least 8 characters");
     return false;
   }
 
-  else if (password.length < 8) {
-    document.getElementById("errorMsg").innerHTML = "Your password must include atleast 8 characters"
-    return false;
-  }
   else {
 
     $.ajax({
@@ -64,7 +79,7 @@ $(document).on('click', '#signupBtn', function () {
         // window.location.href = '/login';
       },
       error: function (xhr, status, error) {
-        document.getElementById('errorMsg').innerHTML = 'Registration failed. Please try again.';
+        displayMessage("Registration failed. Please try again.");
       }
     });
 
