@@ -8,6 +8,8 @@ body {
     display: flex;
     min-height: 100vh;
     align-content: center;
+    heigh:100vh;
+    overflow: hidden;
 }
 
 
@@ -49,6 +51,8 @@ body {
     background-color: transparent;
     width: 600px; /* Adjust width as needed */
     max-width: 600px; /* Adjust max-width as needed */
+    height: 100vh;
+    overflow: auto;
 }
 
 /* Style for the rest of the content */
@@ -85,7 +89,7 @@ button {
 #cancelTaskBtn{
     margin-right: 20px; /* Adjust the value as needed */
     background-color: #5a297a;
-    border-radius: none;
+    border-radius: 0;
     color: white;
 }
 
