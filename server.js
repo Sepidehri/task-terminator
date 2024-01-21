@@ -16,6 +16,26 @@ const Task = db.task;
 const Reminder = db.reminder;
 const cron = require('node-cron');
 
+const dayjs = require ("dayjs");
+const {google} = require('googleapis');
+const oauth2Client = new google.auth.OAuth2(
+    process.env.CLIENT_ID,
+    process.env.CLIENT_SECRET,
+    process.env.REDIRECT_URL
+);
+
+const scopes = [
+  'https://www.googleapis.com/auth/calendar'
+];
+
+const calendar = google.calendar({
+  version: "v3",
+  auth : process.env.API_KEY
+});
+
+
+
+
 var session = require('express-session')
 const {Op, Sequelize} = require("sequelize");
 app.use(session({
@@ -46,6 +66,47 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + '/files/register.html');
 });
 
+app.get('/google', (req,res)=>{
+  const url = oauth2Client.generateAuthUrl({
+    // 'online' (default) or 'offline' (gets refresh_token)
+    access_type: 'offline',
+
+    // If you only need one scope you can pass it as a string
+    scope: scopes
+  });
+  res.redirect(url);
+
+});
+
+app.get('/google/redirect', async (req, res) => {
+  const code = req.query.code;
+  const {tokens} = await oauth2Client.getToken(code);
+  oauth2Client.setCredentials(tokens);
+
+
+  res.redirect('/push_tasks_to_calendar');
+
+})
+
+app.get('/schedule_event', (req,res) =>{
+  //oauth2Client.getTokenInfo().then(info=> info.)
+  calendar.events.insert({
+    calendarId: 'primary',
+    auth: oauth2Client,
+    requestBody:{
+      summary: 'this is a test event',
+      description: 'important event',
+      start:{
+        dateTime : dayjs(new Date()).add(1, 'day').toISOString(),
+        timeZone: "Europe/Vienna",
+      },
+      end: {
+        dateTime: dayjs(new Date()).add(1, 'day').add(1, 'day').toISOString(),
+        timeZone: "Europe/Vienna",
+      }
+    }
+  })
+})
 // User account route - serves the account page and should be protected to ensure only logged-in users can access it
 app.get('/dashboard', (req, res) => {
   if (!req.session.username) {
@@ -407,6 +468,51 @@ app.get('/tasks/category/:category', authenticateUser, async (req, res) => {
     res.json(tasks);
   } catch (error) {
     console.error('Error fetching tasks by category:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+app.get('/push_tasks_to_calendar', authenticateUser,  async (req, res) => {
+
+  try {
+
+    const username = req.session.username;
+    console.log(username);
+
+    const tasks = await Task.findAll({
+          where: {
+            username: {
+              [Sequelize.Op.like]: username
+            }
+          }
+        },
+    );
+
+    // Iterate over tasks and add events to Google Calendar
+    for (const task of tasks) {
+      const event = await calendar.events.insert({
+        calendarId: 'primary',
+        auth: oauth2Client,
+        requestBody: {
+          summary: task.name,
+          description: task.description,
+          start: {
+            dateTime: dayjs(task.deadline).toISOString(),
+            timeZone: 'Europe/Vienna', // Replace with your desired timezone
+          },
+          end: {
+            dateTime: dayjs(task.deadline).add(1, 'hour').toISOString(),
+            timeZone: 'Europe/Vienna', // Replace with your desired timezone
+          },
+        },
+      });
+
+      console.log(`Event created for task ${task.id}:`, event.data);
+    }
+
+    res.status(200).json({ message: 'Events created successfully' });
+  } catch (error) {
+    console.error('Error creating events:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
