@@ -311,9 +311,10 @@ function fetchTasks(filter, sort) {
               <button class="deleteTaskBtn" data-id="${task.id}">Delete</button>
               <button class="setreminderBtn" data-id="${task.id}">Set Reminder</button>
               <button class="${buttonClass}" data-id="${task.id}" ${disabledAttribute}>${buttonLabel}</button>
+              <button class="addSubtaskBtn" data-task-id="${task.id}">Add Subtask</button>
             </div>
             <div class="subtasks" id="subtasks-${task.id}"></div>
-            <button class="addSubtaskBtn" data-task-id="${task.id}">Add Subtask</button>
+            
           </div>
         `;
         taskList.append(taskHtml);
