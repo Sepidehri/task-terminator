@@ -35,7 +35,11 @@ module.exports = (sequelize, Sequelize) => {
         username: {
             type :Sequelize.STRING,
             allowNull: false
-        }
+        },
+        priority: {
+            type: Sequelize.STRING, // or INTEGER
+            allowNull: true,
+        },
 
     });
 

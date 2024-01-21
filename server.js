@@ -130,17 +130,18 @@ app.get('/tasks',authenticateUser, async (req, res) => {
     const username = req.session.username;
     console.log(username);
 
-    // Fetch all tasks from the database
     const tasks = await Task.findAll({
-      where: {
-        username: {
-          [Sequelize.Op.like]: username
+        where: {
+          username: {
+            [Sequelize.Op.like]: username
+          }
         }
-      }
-    });
+      },
+      );
+
 
     // Now you can use the tasks variable containing the results
-    console.log(tasks);
+    //console.log(tasks);
 
     // Send the tasks as a response or perform other operations
     res.status(200).json(tasks);
@@ -165,14 +166,14 @@ app.get('/tasks/:taskId', (req, res) => {
 
 
 app.post('/tasks',authenticateUser, async (req, res) => {
-  const { name, description, deadline ,category } = req.body;
+  const { name, description, deadline ,category, priority } = req.body;
   if (!name) {
     return res.status(400).json({ message: 'Task name is required.' });
   }
 
   try {
     const username = req.session.username;
-    console.log('username');
+    //console.log('username');
 
     const newTask = await Task.create({
       name,
@@ -180,7 +181,8 @@ app.post('/tasks',authenticateUser, async (req, res) => {
       deadline,
       category,
       completed: false,
-      username
+      username,
+      priority
     });
 
     res.status(201).json(newTask);
@@ -250,7 +252,7 @@ app.put('/tasks/:id', async (req, res) => {
   const taskId = parseInt(req.params.id);
 
   // Extract the updated task details from the request body
-  const { name, description, deadline, completed, category } = req.body;
+  const { name, description, deadline, completed, category, priority } = req.body;
 
   try {
     // Use Sequelize to find the task by ID
@@ -267,9 +269,12 @@ app.put('/tasks/:id', async (req, res) => {
     task.deadline = deadline;
     task.completed = completed;
     task.category = category;
+    task.priority = priority;
 
     // Save the updated task to the database
     await task.save();
+    console.log(task.name + task.priority);
+
 
     // Respond with the updated task as the response
     res.status(200).json(task);
@@ -282,7 +287,7 @@ app.put('/tasks/:id', async (req, res) => {
 
 
 
-app.delete('/tasks/:id', async (req, res) => {
+app.delete('/tasks/:id', authenticateUser, async (req, res) => {
   const taskId = parseInt(req.params.id);
   try {
     // Use Sequelize to find the task by ID
@@ -355,7 +360,7 @@ app.get('/tasks/category/closed', authenticateUser, async (req, res) => {
     const username = req.session.username;
 
     // For debugging purposes, log the username to verify it's correct
-    console.log('Username:', username);
+    //console.log('Username:', username);
 
     const pastDeadlineTasks = await Task.findAll({
       where: {
@@ -388,7 +393,7 @@ app.get('/tasks/category/:category', authenticateUser, async (req, res) => {
   try {
     const username = req.session.username;
     const tasks = await Task.findAll({
-      attributes: ['id', 'name', 'description', 'deadline', 'reminderDateTime', 'completed', 'category', 'createdAt', 'updatedAt'],
+      attributes: ['id', 'name', 'description', 'deadline', 'reminderDateTime', 'completed', 'category', 'createdAt', 'updatedAt', 'priority'],
       where: {
         category: {
           [Sequelize.Op.like]: `%${category}%`

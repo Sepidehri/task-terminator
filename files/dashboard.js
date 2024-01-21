@@ -205,9 +205,10 @@ function saveTask() {
   var deadline = $('#taskDeadline').val();
   //var category = $('#taskCategory').options[$('#taskCategory').selectedIndex()].text;
   var category = $('#taskCategory').val();
+  var priority = $('#taskPriority').val();
 
 
-  if (!name || !description || !deadline ||! category) {
+  if (!name || !description || !deadline || !category || !priority ) {
     $('#userFeedback').text('Please fill in all fields').show();
     return;
   }
@@ -216,7 +217,7 @@ function saveTask() {
     url: '/tasks',
     method: 'POST',
     contentType: 'application/json',
-    data: JSON.stringify({ name, description, deadline, category }),
+    data: JSON.stringify({ name, description, deadline, category, priority }),
     success: function (response) {
       fetchTasks();
       $('#taskName').val('');
@@ -252,21 +253,25 @@ $(document).on('click', '#logoutBtn', function () {
 
 
 
-function fetchTasks(filter) {
+function fetchTasks(filter, sort) {
   let url;
+  var sort = sort;
   if (filter ==='all' || !filter){
     url = '/tasks'
   }else{
     url ='/tasks/category/' + filter;
   }
+  /*if (sort) {
+    url += '?sort=' + sort;
+  }*/
   $.ajax({
     //url: '/tasks',
     url: url,
     method: 'GET',
     success: function (tasks) {
+      sortByPriority(tasks, sort);
       var taskList = $('#taskList');
       taskList.empty();
-
       tasks.forEach(function (task) {
           scheduleReminder(task);
 
@@ -410,11 +415,12 @@ function updateTask(taskId) {
   var deadline = $('#taskDeadline').val();
   //var category = $('#taskCategory').options[$('#taskCategory').selectedIndex()].text;
   var category = $('#taskCategory').val();
+  var priority = $('#taskPriority').val();
   $.ajax({
     url: '/tasks/' + taskId,
     method: 'PUT',
     contentType: 'application/json',
-    data: JSON.stringify({ name, description, deadline, category }),
+    data: JSON.stringify({ name, description, deadline, category, priority }),
     success: function (response) {
       fetchTasks(); // Re-fetch the tasks and update the DOM
       $('#taskForm').hide();
@@ -478,5 +484,18 @@ function fetchCompletedTasks() {
   });
 }
 
+function sortByPriority(tasks, sort) {
+  return tasks.sort((a, b) => {
+    // Map priority values to numerical values for comparison
+    const priorityValues = { 'high': 3, 'medium': 2, 'low': 1 };
+    const priorityA = priorityValues[a.priority] || 0;
+    const priorityB = priorityValues[b.priority] || 0;
 
+    // Determine the sorting order based on the 'sort' parameter
+    const sortOrder = (sort === 'asc') ? 1 : -1;
+
+    // Return a negative, zero, or positive value to determine order
+    return sortOrder * (priorityA - priorityB);
+  });
+}
 

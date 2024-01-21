@@ -22,10 +22,14 @@
             <input type="text" id="taskName" placeholder="Task Name">
             <textarea id="taskDescription" placeholder="Task Description"></textarea>
             <input type="text" id="taskDeadline" placeholder="Deadline (yyyy-mm-dd)">
-            <div class="categoryBox"> <select id="taskCategory" name ="category" placeholder="category">
+            <select id="taskCategory" name ="category" placeholder="category">
                 <option value="work">Work</option>
                 <option value="personal">Personal</option>
-                <option value="study">Study</option></select></div>
+                <option value="study">Study</option></select>
+            <select id="taskPriority" name ="priority" placeholder="priority">
+            <option value="high">High Priority</option>
+            <option value="medium">Medium Priority</option>
+            <option value="low">Low Priority</option></select>
             
             <button id="saveTaskBtn">Save Task</button>
             <button id="cancelTaskBtn">Cancel</button>
@@ -56,7 +60,12 @@
             <option value="open">Open Tasks</option>
             <option value="closed">Past Deadline</option>
         </select>
+        <label for="sortBy">Sort by Priorities:</label>
+        <select id="sortBy">
+            <option value="desc">High to Low</option>
+            <option value="asc">Low to High</option>
         </select>
+        <button id="filterBtn">Filter</button>
     </div>
 
     <div id="taskList">
@@ -70,6 +79,9 @@
         <script>
             $(function () {
                 $("#taskDeadline").datepicker({ dateFormat: 'yy-mm-dd' });
+
+
+
 
                 $('#createTaskBtn').click(function () {
                     // Clear the form fields and any existing feedback
@@ -101,10 +113,20 @@
                     fetchCompletedTasks();
                     $("#completedTaskList").toggle(); // Toggle the display of the completed tasks list
                 });
-                $('#filterBy').change(function () {
+                /*$('#filterBy').change(function () {
                     var selectedFilter = $(this).val();
                     fetchTasks(selectedFilter);
                 });
+                $('#sortBy').change(function () {
+                    var selected = $(this).val();
+                    sortByPriority();
+                });*/
+                $("#filterBtn").click(function () {
+                    var selectedFilter = $('#filterBy').val();
+                    var sortingOrder = $('#sortBy').val();
+                    fetchTasks(selectedFilter, sortingOrder);
+                });
+
             });
         </script>
         <script src="dashboard.js"></script>
