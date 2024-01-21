@@ -22,7 +22,8 @@ body {
     display: flex;
     flex-direction: column; /* Stack children vertically */
     justify-content: flex-start; /* Align children to the start of the flex container */
-    align-items: center; /
+    align-items: center; 
+    
 }
 
 #sideMenu button {
@@ -38,6 +39,13 @@ body {
     background-color: #E6E1E5; /* Darker shade for hover */
     color: #56297D; /* Optionally change the text color on hover */
 
+}
+
+#taskContent {
+    margin: 20px auto; /* Center container on the page */
+    background-color: transparent;
+    width: 600px; /* Adjust width as needed */
+    max-width: 600px; /* Adjust max-width as needed */
 }
 
 /* Style for the rest of the content */
@@ -156,17 +164,20 @@ h2, h3 {
     color: #343434;
 }
 
-.filter{
+#filter{
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    margin: 20px auto; /* Center container on the page */
+    margin: 0px auto; /* Center container on the page */
     background-color: rgba(119, 16, 180, 0.87);
     height: 30px;
-    width:600px;
-
-}
+    width:570px;
+    padding: 10px;
+    border-radius: 5px;
+    justify-content: space-between;
+   
+    }
 
 /* Task List Container Styles */
 #taskList {
