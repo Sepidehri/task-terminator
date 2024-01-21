@@ -23,6 +23,7 @@ body {
     flex-direction: column; /* Stack children vertically */
     justify-content: flex-start; /* Align children to the start of the flex container */
     align-items: center; 
+    height: 100vh;
     
 }
 
