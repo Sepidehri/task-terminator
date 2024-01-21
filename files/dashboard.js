@@ -298,6 +298,14 @@ function fetchTasks(filter, sort) {
               <label>Deadline:</label>
               <p>${task.deadline}</p>
             </div>
+            <div class="task-field">
+              <label>Category:</label>
+              <p>${task.category}</p>
+            </div>
+            <div class="task-field">
+              <label>Priority:</label>
+              <p>${task.priority}</p>
+            </div>
             <div class="task-actions">
               <button class="editTaskBtn" data-id="${task.id}">Edit</button>
               <button class="deleteTaskBtn" data-id="${task.id}">Delete</button>
