@@ -506,3 +506,16 @@ function sortByPriority(tasks, sort) {
   });
 }
 
+function pushTasksToCalendar(){
+  window.location.href ='/google';
+  //fetchTasks();
+  //$('#userFeedback').text('Tasks are now in your Google Calendar! #TaskTerminator').show();
+}
+
+window.onload = function () {
+  // Check if the page URL contains '/push_tasks_to_calendar'
+  if (window.location.href.includes('/push_tasks_to_calendar')) {
+    // Display your alert or any other logic you want
+    $('#userFeedback').text('Tasks are now in your Google Calendar! #TaskTerminator').show();
+  }
+};

@@ -494,6 +494,14 @@ app.get('/push_tasks_to_calendar', authenticateUser,  async (req, res) => {
 
     // Iterate over tasks and add events to Google Calendar
     for (const task of tasks) {
+
+      if (!task.inCalendar) {
+        // Update the inCalendar field
+        task.inCalendar = true;
+
+        // Save the changes to the database
+        await task.save();
+
       const event = await calendar.events.insert({
         calendarId: 'primary',
         auth: oauth2Client,
@@ -510,12 +518,12 @@ app.get('/push_tasks_to_calendar', authenticateUser,  async (req, res) => {
           },
         },
       });
-      task.inCalendar = true; // avoid duplicates in the calendar
+
       console.log(`Event created for task ${task.id}:`, event.data);
-    }
+    }}
 
     //res.status(200).json({ message: 'Events created successfully' });
-    res.redirect('/dashboard');
+    return res.redirect('/dashboard');
 
   } catch (error) {
     console.error('Error creating events:', error);
