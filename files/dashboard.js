@@ -105,7 +105,7 @@ $(document).on('click', '#saveReminderBtn', function () {
     return;
   }
 
-  
+
   // AJAX call to server to set reminder
   $.ajax({
     url: '/tasks/' + taskId + '/set-reminder',
@@ -207,7 +207,7 @@ function saveTask() {
   var priority = $('#taskPriority').val();
 
 
-  if (!name || !description || !deadline || !category || !priority ) {
+  if (!name || !description || !deadline || !category || !priority) {
     $('#userFeedback').text('Please fill in all fields').show();
     return;
   }
@@ -255,10 +255,10 @@ $(document).on('click', '#logoutBtn', function () {
 function fetchTasks(filter, sort) {
   let url;
   var sort = sort;
-  if (filter ==='all' || !filter){
+  if (filter === 'all' || !filter) {
     url = '/tasks'
-  }else{
-    url ='/tasks/category/' + filter;
+  } else {
+    url = '/tasks/category/' + filter;
   }
   /*if (sort) {
     url += '?sort=' + sort;
@@ -272,7 +272,7 @@ function fetchTasks(filter, sort) {
       var taskList = $('#taskList');
       taskList.empty();
       tasks.forEach(function (task) {
-          scheduleReminder(task);
+        scheduleReminder(task);
 
         // Determine button label and class based on completion status
         var buttonLabel = task.completed ? 'Completed' : 'Mark as Complete';
@@ -312,16 +312,18 @@ function fetchTasks(filter, sort) {
               <button class="setreminderBtn" data-id="${task.id}">Set Reminder</button>
               <button class="${buttonClass}" data-id="${task.id}" ${disabledAttribute}>${buttonLabel}</button>
             </div>
+            <div class="subtasks" id="subtasks-${task.id}"></div>
+            <button class="addSubtaskBtn" data-task-id="${task.id}">Add Subtask</button>
           </div>
         `;
         taskList.append(taskHtml);
 
 
 
-       /* // Set reminders for tasks with reminder date and time
-        if (task.reminderDateTime) {
-          scheduleReminder(task);
-        }*/
+        /* // Set reminders for tasks with reminder date and time
+         if (task.reminderDateTime) {
+           scheduleReminder(task);
+         }*/
       });
 
       // Reattach event listeners to the buttons
@@ -333,6 +335,77 @@ function fetchTasks(filter, sort) {
     }
   });
 }
+
+
+
+
+$(document).on('click', '.addSubtaskBtn', function () {
+  var taskId = $(this).data('task-id');
+  // Call a function to handle the subtask addition (to be implemented)
+  handleAddSubtask(taskId);
+});
+
+
+function handleAddSubtask(taskId) {
+  // Create a simple form for subtask title and description
+  var subtaskForm = `
+    <div class="subtask-form">
+      <input type="text" id="subtaskTitle-${taskId}" placeholder="Subtask Title">
+      <textarea id="subtaskDesc-${taskId}" placeholder="Subtask Description"></textarea>
+      <button class="saveSubtaskBtn" data-task-id="${taskId}">Save Subtask</button>
+      <button class="cancelSubtaskBtn" data-task-id="${taskId}">Cancel</button>
+    </div>
+  `;
+
+  // Append the form to the subtasks container
+  $('#subtasks-' + taskId).append(subtaskForm);
+}
+
+
+
+$(document).on('click', '.saveSubtaskBtn', function () {
+  var taskId = $(this).data('task-id');
+  saveSubtask(taskId);
+});
+
+$(document).on('click', '.cancelSubtaskBtn', function () {
+  var taskId = $(this).data('task-id');
+  // Hide or remove the subtask form and clear any inputs
+  $('#subtasks-' + taskId + ' .subtask-form').remove();
+});
+
+
+function saveSubtask(taskId) {
+  var title = $('#subtaskTitle-' + taskId).val();
+  var description = $('#subtaskDesc-' + taskId).val();
+  
+  if (!title) {
+    alert('Please enter a subtask title.');
+    return;
+  }
+
+  $.ajax({
+    url: '/tasks/' + taskId + '/subtasks',
+    method: 'PUT',
+    contentType: 'application/json',
+    data: JSON.stringify({ title, description }),
+    success: function(subtask) {
+      // Append the saved subtask to the UI
+      var subtaskHtml = `<div class="subtask">
+        <h4>${subtask.title}</h4>
+        <p>${subtask.description}</p>
+      </div>`;
+      $('#subtasks-' + taskId).append(subtaskHtml);
+    },
+    error: function() {
+      alert('Error saving subtask');
+    }
+  });
+
+  // Clear and remove the form
+  $('#subtasks-' + taskId + ' .subtasks').remove();
+}
+
 
 // Function to schedule a reminder
 function scheduleReminder(task) {
@@ -385,7 +458,26 @@ tasks.forEach(function (task) {
   var taskHtml = '<div class="task" id="task-' + task.id + '" ' +
     // ... rest of your task HTML structure
     taskList.append(taskHtml);
+    var subtasksHtml = task.subtasks.map(subtask => `
+    <div class="subtask">
+      <h4>${subtask.title}</h4>
+      <p>${subtask.description}</p>
+    </div>
+  `).join('');
+
+  var taskHtml = `
+    <div class="task" id="task-${task.id}">
+      <!-- Task fields -->
+      <div class="subtasks" id="subtasks-${task.id}">${subtasksHtml}</div>
+      <button class="addSubtaskBtn" data-task-id="${task.id}">Add Subtask</button>
+      <!-- Task actions -->
+    </div>
+  `;
+  taskList.append(taskHtml);
+
 });
+
+
 function deleteTask(taskId) {
   $.ajax({
     url: '/tasks/' + taskId,
@@ -432,7 +524,7 @@ function updateTask(taskId) {
       fetchTasks(); // Re-fetch the tasks and update the DOM
       $('#taskForm').hide();
       editingTaskId = null; // Reset the editing state
-     // $('#userFeedback').text('Task updated successfully').show().fadeOut(3000);
+      // $('#userFeedback').text('Task updated successfully').show().fadeOut(3000);
     },
     error: function (xhr, status, error) {
       console.error('Error updating task:', status, error);
@@ -506,8 +598,8 @@ function sortByPriority(tasks, sort) {
   });
 }
 
-function pushTasksToCalendar(){
-  window.location.href ='/google';
+function pushTasksToCalendar() {
+  window.location.href = '/google';
   //fetchTasks();
   //$('#userFeedback').text('Tasks are now in your Google Calendar! #TaskTerminator').show();
 }

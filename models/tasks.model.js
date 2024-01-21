@@ -48,6 +48,10 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.STRING,
             defaultValue: '',
         },
+        subtasks: {
+            type :Sequelize.STRING,
+            allowNull: false
+        },
 
     });
 

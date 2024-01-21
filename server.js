@@ -531,6 +531,31 @@ app.get('/push_tasks_to_calendar', authenticateUser,  async (req, res) => {
   }
 });
 
+
+
+app.put('/tasks/:taskId/subtasks', authenticateUser, async (req, res) => {
+  const taskId = req.params.taskId;
+  const { title, description } = req.body;
+
+  try {
+    const task = await Task.findByPk(taskId);
+    if (!task) {
+      return res.status(404).json({ message: 'Task not found.' });
+    }
+
+    const subtask = await Subtask.create({ title, description, TaskId: taskId });
+    res.status(201).json(subtask);
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error.' });
+  }
+});
+
+
+
+
+
+
+
 app.post('/tasks/:taskId/share', async (req, res) => {
   const { usernames } = req.body;
   const taskId = req.params.taskId;
