@@ -44,7 +44,7 @@ function displayMessage(message) {
   errorMsgElement.html(message).show();
 
   // Use jQuery's fadeOut to slowly fade the message after 2 seconds
-  setTimeout(function() {
+  setTimeout(function () {
     errorMsgElement.fadeOut('slow');
   }, 2000);
 }
@@ -75,16 +75,19 @@ $(document).on('click', '#signupBtn', function () {
       contentType: 'application/json',
       success: function (response) {
         console.log(response)
-        alert('Successfully registered');
+        displayMessage("Successfully registered");
         // window.location.href = '/login';
+        // Clear input fields after successful registration
+        $("#signEmail").val('');
+        $("#signName").val('');
+        $("#signPassword").val('');
       },
       error: function (xhr, status, error) {
         displayMessage("Registration failed. Please try again.");
       }
     });
-
-
   }
+  return false; // Prevent form submission
 });
 
 $(document).on('click', '#logoutBtn', function () {
