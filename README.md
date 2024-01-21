@@ -149,6 +149,11 @@ Tasks can be marked as complete, edited, or deleted as per your needs.
 Categorization and Prioritization:
 Organize tasks into categories and set priorities for better management.
 
+Ptoject Demo:
+![cd292d7b-bf44-4273-9be1-dc248e016c71](https://github.com/Sepidehri/task-terminator/assets/114486248/d9f63086-3299-4ee8-9ad2-4e0cfd4f5b57)
+![9749d26f-0a86-48de-990d-33b10a7e61b2](https://github.com/Sepidehri/task-terminator/assets/114486248/e6563535-dca9-4047-8a83-2e4dec90d772)
+
+
 MoSCoW Criteria
 
 Must-Have
@@ -170,5 +175,6 @@ C2: Sharing tasks for collaborative work.
 
 Won't-Have
 Complex project management features like Gantt charts or resource allocation.
+
 
 
