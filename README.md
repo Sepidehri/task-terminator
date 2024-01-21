@@ -82,6 +82,7 @@ Create Tables
        createdAt DATETIME NOT NULL, 
        updatedAt DATETIME NOT NULL, 
        inCalendar TINYINT NOT NULL DEFAULT 0 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+       subtasks VARCHAR(100) NOT NULL, 
   
 - Create a `users` table:
 
