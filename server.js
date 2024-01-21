@@ -513,7 +513,7 @@ app.get('/push_tasks_to_calendar', authenticateUser,  async (req, res) => {
             timeZone: 'Europe/Vienna', // Replace with your desired timezone
           },
           end: {
-            dateTime: dayjs(task.deadline).add(1, 'hour').toISOString(),
+            dateTime: dayjs(task.deadline).add(1, 'day').toISOString(),
             timeZone: 'Europe/Vienna', // Replace with your desired timezone
           },
         },
@@ -531,34 +531,46 @@ app.get('/push_tasks_to_calendar', authenticateUser,  async (req, res) => {
   }
 });
 
+app.post('/tasks/:taskId/share', async (req, res) => {
+  const { usernames } = req.body;
+  const taskId = req.params.taskId;
 
+  try {
+    const task = await Task.findByPk(taskId);
 
+    if (!task) {
+      return res.status(404).json({ message: 'Task not found.' });
+    }
 
-/* DEBUGGING USE
-cron.schedule('* * * * *', async () => {
-    console.log("Looking for reminders");
-    // Get tasks from your database and send push notifications
-    const tasks = await Task.findAll({ attributes: ['id', 'name', 'description', 'deadline', 'reminderDateTime']});
-    //console.log(tasks);
+    // Update the sharedWith field with the provided usernames
+    task.sharedWith = usernames;
+    await task.save();
 
-    tasks.forEach((task) => {
-     // console.log(task.name)
-      var reminderTime = new Date(task.reminderDateTime).getTime();
-      console.log("reminderTime :" + reminderTime);
-      var now = new Date().getTime();
-      //console.log("current Time" + now)
-      var timeUntilReminder = reminderTime - now;
-     //console.log("difference"+ timeUntilReminder)
-
-
-      if (timeUntilReminder > 0) {
-        setTimeout(function () {
-          console.log("REMINDER!!!!")
-        }, timeUntilReminder);
-      }
+    res.status(200).json({ message: 'Task shared successfully.' });
+  } catch (error) {
+    console.error('Error sharing task:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
 });
-});*/
+app.get('/users/:username/shared-tasks', async (req, res) => {
+  const username = req.params.username;
 
+  try {
+    // Fetch tasks that are shared with the specified user
+    const sharedTasks = await Task.findAll({
+      where: {
+        sharedWith: {
+          [Sequelize.Op.like]: [username], // Assuming sharedWith is an array of user IDs
+        },
+      },
+    });
+
+    res.status(200).json(sharedTasks);
+  } catch (error) {
+    console.error('Error fetching shared tasks:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 
 
 // Server Start

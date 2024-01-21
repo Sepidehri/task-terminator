@@ -43,7 +43,11 @@ module.exports = (sequelize, Sequelize) => {
         inCalendar: {
             type: Sequelize.BOOLEAN,
             allowNull: false,
-        }
+        },
+        sharedWith: {
+            type: Sequelize.STRING,
+            defaultValue: '',
+        },
 
     });
 
