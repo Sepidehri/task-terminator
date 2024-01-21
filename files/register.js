@@ -11,11 +11,38 @@ $(window).on("hashchange", function () {
 });
 $(window).trigger("hashchange");
 
-$(document).on('click', '#loginBtn', function () {
-  var username = document.getElementById("logName").value;
-  var password = document.getElementById("logPassword").value;
 
-  if (username == "" || password == "") {
+// Check if rememberUsername cookie is set
+$(document).ready(function() {
+  var rememberedUsername = getCookie("rememberUsername");
+  if (rememberedUsername) {
+    $("#logName").val(decodeURIComponent(rememberedUsername));
+    $("#remember").prop("checked", true);
+  }
+});
+
+
+// Function to get a cookie by name
+function getCookie(name) {
+  var nameEQ = name + "=";
+  var ca = document.cookie.split(';');
+  for(var i=0;i < ca.length;i++) {
+    var c = ca[i];
+    while (c.charAt(0)==' ') c = c.substring(1,c.length);
+    if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+  }
+  return null;
+}
+
+
+
+
+$(document).on('click', '#loginBtn', function () {
+  var username = $("#logName").val();
+  var password = $("#logPassword").val();
+  var remember = $("#remember").is(":checked");
+
+  if (username === "" || password === "") {
     displayMessage("Please fill the required fields");
     return false;
   }
@@ -28,6 +55,11 @@ $(document).on('click', '#loginBtn', function () {
     success: function (response) {
       alert("Successfully logged in");
       window.location.href = "/dashboard";
+
+      // Set cookie if 'Remember Me' is checked
+      if (remember) {
+        document.cookie = "rememberUsername=" + encodeURIComponent(username) + "; path=/; max-age=86400"; // Cookie expires after 1 day
+      }
     },
     error: function (xhr, status, error) {
       displayMessage("Invalid username or password.");
