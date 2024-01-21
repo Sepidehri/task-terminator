@@ -34,7 +34,7 @@ body {
 #sideMenu button {
     width: fit-content;
     border-radius: 10px;
-    background-color: #19141b;
+    background-color: #433b46;
     color: #e6cef7;
     border: 2px #e6cef7;
     box-shadow: white;
@@ -193,7 +193,7 @@ h2, h3 {
     width:570px;
     padding: 10px;
     border-radius: 5px;
-    gap : 30px;
+    gap : 20px;
    
     }
 
