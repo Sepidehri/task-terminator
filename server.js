@@ -66,7 +66,7 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + '/files/register.html');
 });
 
-app.get('/google', (req,res)=>{
+app.get('/google', async (req,res)=>{
   const url = oauth2Client.generateAuthUrl({
     // 'online' (default) or 'offline' (gets refresh_token)
     access_type: 'offline',
@@ -242,8 +242,10 @@ app.post('/tasks',authenticateUser, async (req, res) => {
       deadline,
       category,
       completed: false,
+      inCalendar: false,
       username,
       priority
+
     });
 
     res.status(201).json(newTask);
@@ -483,7 +485,9 @@ app.get('/push_tasks_to_calendar', authenticateUser,  async (req, res) => {
           where: {
             username: {
               [Sequelize.Op.like]: username
-            }
+            },
+            completed: false,
+            inCalendar: false
           }
         },
     );
@@ -506,11 +510,13 @@ app.get('/push_tasks_to_calendar', authenticateUser,  async (req, res) => {
           },
         },
       });
-
+      task.inCalendar = true; // avoid duplicates in the calendar
       console.log(`Event created for task ${task.id}:`, event.data);
     }
 
-    res.status(200).json({ message: 'Events created successfully' });
+    //res.status(200).json({ message: 'Events created successfully' });
+    res.redirect('/dashboard');
+
   } catch (error) {
     console.error('Error creating events:', error);
     res.status(500).json({ error: 'Internal Server Error' });

@@ -40,6 +40,10 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.STRING, // or INTEGER
             allowNull: true,
         },
+        inCalendar: {
+            type: Sequelize.BOOLEAN,
+            allowNull: false,
+        }
 
     });
 
