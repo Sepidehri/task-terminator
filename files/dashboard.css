@@ -154,6 +154,8 @@ h2, h3 {
  #taskForm button {
     background-color: #7434a4;
     color: white;
+    display: inline-block;
+    width: 200px;
    
 }
 
