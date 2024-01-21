@@ -8,7 +8,7 @@ body {
     display: flex;
     min-height: 100vh;
     align-content: center;
-    heigh:100vh;
+    height:100vh;
     overflow: hidden;
 }
 
@@ -196,6 +196,7 @@ h2, h3 {
     gap : 20px;
    
     }
+    
 
 /* Task List Container Styles */
 #taskList {
@@ -268,11 +269,24 @@ h2, h3 {
     border-radius: 5px;
     background-color: white;
     border-color: #7434a4;
+ 
    
 }
  #reminderForm button {
+    margin-right: 10px;
     background-color: #7434a4;
-    color: #181818;
+    color: white;
+    border: 2px #e6cef7;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+
 }
 #reminderForm input[type="text"], 
 #reminderForm textarea {
