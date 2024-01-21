@@ -65,7 +65,6 @@ $(document).ready(function () {
     // You might want to store the task ID so you know which task to set the reminder for
     var taskId = $(this).data('id');
     $('#reminderForm').data('taskId', taskId);
-    setupReminder(taskId); // Call the function to set up the reminder
   });
   $(document).on('click', '.completeTaskBtn', function () {
     console.log('Complete button clicked');
