@@ -17,7 +17,7 @@ body {
     flex: 0 0 350px; /* Adjust width as needed */
     padding: 20px;
     box-sizing: border-box;
-    background-image: url("https://imgur.com/QHbmYRu.png");
+    background-image: url("https://imgur.com/s8Q4tyP.png");
     background-size: cover; /* Cover ensures the entire menu is filled */
     background-repeat: no-repeat;
     background-position: center;
@@ -32,7 +32,7 @@ body {
 }
 
 #sideMenu button {
-    width: fit-content;
+    width: 200px;
     border-radius: 10px;
     background-color: #433b46;
     color: #e6cef7;

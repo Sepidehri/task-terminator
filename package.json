@@ -9,6 +9,7 @@
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "express-session": "^1.17.3",
+    "google-client-api": "^1.0.4",
     "googleapis": "^131.0.0",
     "jquery": "^3.7.0",
     "jsonwebtoken": "^9.0.0",

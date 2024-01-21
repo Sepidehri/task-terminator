@@ -18,6 +18,7 @@
         <div id="welcomeUser" style="margin-bottom: 20px;"></div>
         <button id="logoutBtn">Logout</button>
         <button id="createTaskBtn">Create Task</button>
+        <button id="addToCalendarBtn">Add to Calendar</button>
         <div id="taskForm" style="display:none;">
             <input type="text" id="taskName" placeholder="Task Name">
             <textarea id="taskDescription" placeholder="Task Description"></textarea>
@@ -126,6 +127,24 @@
                     var sortingOrder = $('#sortBy').val();
                     fetchTasks(selectedFilter, sortingOrder);
                 });
+                
+                $(document).ready(function () {
+    $('#addToCalendarBtn').click(function () {
+      $.ajax({
+        url: '/google', // Replace with the appropriate route on your server
+        type: 'GET',
+        success: function (data) {
+          // Handle the success response from the server
+          alert(data.message); // You can display a success message here
+        },
+        error: function (error) {
+          // Handle any errors that occur during the request
+          console.error('Error adding tasks to calendar:', error);
+          alert('An error occurred while adding tasks to the calendar.');
+        }
+      });
+    });
+  });
 
             });
         </script>
