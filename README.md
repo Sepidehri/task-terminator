@@ -70,27 +70,27 @@ Create Tables
   
 - Create a `tasks` table:
 
-        CREATE TABLE tasks (
-        createdAT DATETIME NOT NULL,
-        updatedAT DATETIME NOT NULL,
-        reminderDateTime DATETIME,
-        category VARCHAR(100),
-        username VARCHAR(100) NOT NULL,
-        priority VARCHAR(100),
-        inCalendar INT
-      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+       CREATE TABLE tasks ( id INT AUTO_INCREMENT PRIMARY KEY, 
+       name VARCHAR(100) NOT NULL, description VARCHAR(100), 
+       deadline DATE, 
+       reminderDateTime DATETIME, 
+       completed TINYINT NOT NULL DEFAULT 0, 
+       category VARCHAR(100), 
+       username VARCHAR(100) NOT NULL, 
+       priority VARCHAR(100), 
+       sharedWith VARCHAR(100), 
+       createdAt DATETIME NOT NULL, 
+       updatedAt DATETIME NOT NULL, 
+       inCalendar TINYINT NOT NULL DEFAULT 0 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
   
 - Create a `users` table:
 
-      CREATE TABLE users (
-        id INT(10) AUTO_INCREMENT PRIMARY KEY,
-        username VARCHAR(45) NOT NULL,
-        password VARCHAR(500) NOT NULL,
-        email VARCHAR(45) NOT NULL,
-        createdAT DATETIME NOT NULL,
-        updatedAT DATETIME NOT NULL
-      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
+       CREATE TABLE users ( id INT AUTO_INCREMENT PRIMARY KEY,
+       username VARCHAR(45) NOT NULL, 
+       password VARCHAR(500) NOT NULL, 
+       email VARCHAR(45) NOT NULL, 
+       createdAt DATETIME NOT NULL, 
+       updatedAt DATETIME NOT NULL ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 Alternative: MySQL Workbench
 For those who prefer a graphical interface, MySQL Workbench is an excellent alternative. It provides a user-friendly environment for database design, administration, and management.
