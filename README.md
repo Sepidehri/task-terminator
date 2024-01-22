@@ -93,6 +93,19 @@ Create Tables
        createdAt DATETIME NOT NULL, 
        updatedAt DATETIME NOT NULL ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+- Create a `subtasks` table:
+
+         CREATE TABLE subtasks ( id INT NOT NULL AUTO_INCREMENT,
+         title VARCHAR(100) NOT NULL,
+         description VARCHAR(100),
+         taskId INT NOT NULL,
+         createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+         updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+         PRIMARY KEY (id),
+         FOREIGN KEY (taskId) REFERENCES tasks(id) ON DELETE CASCADE
+       ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  
+
 Alternative: MySQL Workbench
 For those who prefer a graphical interface, MySQL Workbench is an excellent alternative. It provides a user-friendly environment for database design, administration, and management.
 Download MySQL Workbench from the official website(https://dev.mysql.com/downloads/workbench/).
@@ -103,6 +116,8 @@ Use the built-in tools to design and create your tables (tasks, users, etc.).
 
 ![PHOTO-2024-01-21-22-37-56](https://github.com/Sepidehri/task-terminator/assets/114486248/72ea2441-014c-4084-a99f-653cc047bb5e)
 ![PHOTO-2024-01-21-22-38-48](https://github.com/Sepidehri/task-terminator/assets/114486248/b7caa98e-b4ae-4f80-aa96-bbe3ffd5966b)
+![PHOTO-2024-01-22-02-27-24](https://github.com/Sepidehri/task-terminator/assets/114486248/ea41f5c4-fa8d-476a-80b3-ff04662ef441)
+
 
 
 
@@ -150,7 +165,7 @@ Tasks can be marked as complete, edited, or deleted as per your needs.
 Categorization and Prioritization:
 Organize tasks into categories and set priorities for better management.
 
-Ptoject Demo:
+Project Demo:
 ![cd292d7b-bf44-4273-9be1-dc248e016c71](https://github.com/Sepidehri/task-terminator/assets/114486248/d9f63086-3299-4ee8-9ad2-4e0cfd4f5b57)
 ![9749d26f-0a86-48de-990d-33b10a7e61b2](https://github.com/Sepidehri/task-terminator/assets/114486248/e6563535-dca9-4047-8a83-2e4dec90d772)
 
