@@ -50,7 +50,7 @@ module.exports = (sequelize, Sequelize) => {
         },
         subtasks: {
             type :Sequelize.STRING,
-            allowNull: false
+            allowNull: true,
         },
 
     });
