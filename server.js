@@ -13,6 +13,7 @@ const cookieParser = require('cookie-parser');
 const db = require("./models");
 const User = db.user;
 const Task = db.task;
+const Subtask =db.subtask;
 const Reminder = db.reminder;
 const cron = require('node-cron');
 
@@ -534,7 +535,7 @@ app.get('/push_tasks_to_calendar', authenticateUser,  async (req, res) => {
 
 
 app.put('/tasks/:taskId/subtasks', authenticateUser, async (req, res) => {
-  const taskId = req.params.taskId;
+  const taskId = parseInt(req.params.taskId);
   const { title, description } = req.body;
 
   try {
@@ -543,7 +544,7 @@ app.put('/tasks/:taskId/subtasks', authenticateUser, async (req, res) => {
       return res.status(404).json({ message: 'Task not found.' });
     }
 
-    const subtask = await Subtask.create({ title, description, TaskId: taskId });
+    const subtask = await Subtask.create({ title, description, taskId: taskId });
     res.status(201).json(subtask);
   } catch (error) {
     res.status(500).json({ message: 'Internal server error.' });

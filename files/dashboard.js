@@ -400,6 +400,7 @@ function saveSubtask(taskId) {
     },
     error: function() {
       alert('Error saving subtask');
+      console.error(this.error)
     }
   });
 

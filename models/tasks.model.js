@@ -34,7 +34,7 @@ module.exports = (sequelize, Sequelize) => {
         },
         username: {
             type :Sequelize.STRING,
-            allowNull: false
+            allowNull: true
         },
         priority: {
             type: Sequelize.STRING, // or INTEGER
@@ -56,7 +56,7 @@ module.exports = (sequelize, Sequelize) => {
     });
 
     Task.associate = (models) => {
-        Task.hasOne(models.Reminder, {
+        Task.hasOne(models.Subtask, {
             foreignKey: 'taskId',
             onDelete: 'CASCADE',
         });
